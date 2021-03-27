@@ -16,7 +16,7 @@ public class PasswordAssignmentTable extends DatabaseTable {
 	};
 	
 	private final static String createSql = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME
-			+ " ( " + ID + " INT PRIMARY KEY AUTOINCREMENT, "
+			+ " ( " + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 			+ USER_ID + " INTEGER, "
 			+ PASSWORD_ID + " INTEGER, "
 			+ " FOREIGN KEY(" + USER_ID + ") REFERENCES " + UserTable.getTableName() + " (" + UserTable.getId() + ")"
@@ -29,7 +29,7 @@ public class PasswordAssignmentTable extends DatabaseTable {
 
 	@Override
 	public String getTable_name() {
-		return getTable_name();
+		return getTableName();
 	}
 	
 	public static String getTableName() {

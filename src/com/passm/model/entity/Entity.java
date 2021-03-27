@@ -6,8 +6,27 @@ import java.sql.Statement;
 import com.passm.model.database.tables.DatabaseTable;
 
 public abstract class Entity {
+	
+	private int id;
+	
+	public Entity() {
+		setId(0);
+	}
+	
+	public Entity(int id) {
+		setId(id);
+	}
 
 	abstract public boolean load(Statement statement);
+	
+	public boolean exist(Statement statement) {
+		try {
+			return getDatabaseTable().exist(statement, getId());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 	
 	public boolean update(Statement statement) {
 		if(!validate()) {
@@ -20,9 +39,11 @@ public abstract class Entity {
 			if(table.exist(statement, id)) {
 				table.update(statement, id, fields);
 			} else {
-				table.insert(statement, fields);
+				int newId = table.insert(statement, fields);
+				setId(newId);
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
 			return false;
 		}
 		return true;
@@ -46,7 +67,13 @@ public abstract class Entity {
 	
 	abstract protected Object[] getFields();
 	
-	abstract protected int getId();
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
 	
 	abstract public boolean validate();
 }

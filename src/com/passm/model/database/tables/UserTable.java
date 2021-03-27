@@ -28,7 +28,7 @@ public class UserTable extends DatabaseTable {
 	
 	@Override
 	public String getTable_name() {
-		return getTable_name();
+		return getTableName();
 	}
 	
 	public static String getTableName() {

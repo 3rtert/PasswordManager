@@ -26,7 +26,9 @@ public class DatabaseCreator {
 	
 	public void createDatabase() {
 		try(DatabaseConnection databaseConnection = new DatabaseConnection()) {
-			createTables(databaseConnection.createConnection());
+			Connection connection = databaseConnection.createConnection();
+			createTables(connection);
+			connection.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

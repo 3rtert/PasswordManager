@@ -19,7 +19,7 @@ public class PasswordTable extends DatabaseTable {
 	};
 	
 	private final static String createSql = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME
-			+ " ( " + ID + " INT PRIMARY KEY AUTOINCREMENT, "
+			+ " ( " + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 			+ NAME + " CHAR(50) NOT NULL, "
 			+ DESCRIPTION + " CHAR(100), "
 			+ PASSWORD_HASH + " TEXT NOT NULL)";
@@ -31,7 +31,7 @@ public class PasswordTable extends DatabaseTable {
 	
 	@Override
 	public String getTable_name() {
-		return getTable_name();
+		return getTableName();
 	}
 	
 	public static String getTableName() {
