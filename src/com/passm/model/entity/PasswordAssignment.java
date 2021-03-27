@@ -11,9 +11,19 @@ public class PasswordAssignment extends Entity {
 	
 	PasswordAssignmentTable passwordAssignmentTable = new PasswordAssignmentTable();
 	
-	private int id;
 	private int userId;
 	private int passwordId;
+
+	public PasswordAssignment() {}
+	
+	public PasswordAssignment(int id) {
+		super(id);
+	}
+	
+	public PasswordAssignment(int userId, int passwordId) {
+		this.userId = userId;
+		this.passwordId = passwordId;
+	}
 	
 	@Override
 	protected Object[] getFields() {
@@ -23,9 +33,33 @@ public class PasswordAssignment extends Entity {
 			};
 	}
 
+	public PasswordAssignmentTable getPasswordAssignmentTable() {
+		return passwordAssignmentTable;
+	}
+
+	public void setPasswordAssignmentTable(PasswordAssignmentTable passwordAssignmentTable) {
+		this.passwordAssignmentTable = passwordAssignmentTable;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public int getPasswordId() {
+		return passwordId;
+	}
+
+	public void setPasswordId(int passwordId) {
+		this.passwordId = passwordId;
+	}
+	
 	@Override
 	public boolean load(Statement statement) {
-		try (ResultSet rs = passwordAssignmentTable.getObject(statement, id)) {
+		try (ResultSet rs = passwordAssignmentTable.getObject(statement, getId())) {
 			this.userId = rs.getInt(2);
 			this.passwordId = rs.getInt(3);
 		} catch (SQLException e) {
@@ -38,15 +72,9 @@ public class PasswordAssignment extends Entity {
 	protected DatabaseTable getDatabaseTable() {
 		return passwordAssignmentTable;
 	}
-	
-	@Override
-	protected int getId() {
-		return id;
-	}
 
 	@Override
 	public boolean validate() {
 		return true;
 	}
-
 }

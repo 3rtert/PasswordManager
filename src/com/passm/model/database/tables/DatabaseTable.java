@@ -12,23 +12,32 @@ public abstract class DatabaseTable {
 		statement.execute(getCreateSql());
 	}
 	
-	public void insert(Statement statement, Object...values) throws SQLException {
-		statement.executeUpdate(getInsertSql(values), getColumnNames());
+	public int insert(Statement statement, Object...values) throws SQLException {
+		return statement.executeUpdate(getInsertSql(getColumnNames(), values));
 	}
 	
-	protected String getInsertSql(Object...values) {
+	protected String getInsertSql(String[] columns, Object...values) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("INSERT INTO " + getTable_name() + " (");
-		for(Object value : values) {
-			sb.append(value.toString() + ", ");
+		for(String column : columns) {
+			sb.append(" ");
+			sb.append(column);
+			sb.append(",");
 		}
-		sb.deleteCharAt(sb.length());
-		sb.append(");");
+		sb.deleteCharAt(sb.length() - 1);
+		sb.append(" ) VALUES (");
+		for(Object value : values) {
+			sb.append(" '");
+			sb.append(value);
+			sb.append("',");
+		}
+		sb.deleteCharAt(sb.length() - 1);
+		sb.append(" );");
 		return sb.toString();
 	}
 	
-	public void update(Statement statement, int id, Object...values) throws SQLException {
-		statement.executeUpdate(getUpdateSql(values, id));
+	public int update(Statement statement, int id, Object...values) throws SQLException {
+		return statement.executeUpdate(getUpdateSql(values, id));
 	}
 	
 	protected String getUpdateSql(Object[] values, int id) {
@@ -40,11 +49,11 @@ public abstract class DatabaseTable {
 		for(int i = 0 ; i < values.length; i++) {
 			sb.append(" ");
 			sb.append(columns[i]);
-			sb.append(" = ");
+			sb.append(" = '");
 			sb.append(values[i]);
-			sb.append(",");
+			sb.append("',");
 		}
-		sb.deleteCharAt(sb.length());
+		sb.deleteCharAt(sb.length() - 1);
 		sb.append(" WHERE ");
 		sb.append(ID_FIELD_NAME);
 		sb.append(" = ");
@@ -70,11 +79,11 @@ public abstract class DatabaseTable {
 	}
 
 	public boolean exist(Statement statement, int id) throws SQLException {
-		return getObject(statement, id) != null;
+		return getObject(statement, id).next();
 	}
 	
 	public ResultSet getObject(Statement statement, int id) throws SQLException {
-		String sql = "SELECT * FROM " + getTable_name() + "o WHERE o:id = " + Integer.toString(id);
+		String sql = "SELECT * FROM " + getTable_name() + " o WHERE " + ID_FIELD_NAME + " = " + Integer.toString(id);
 		return statement.executeQuery(sql);
 	}
 	

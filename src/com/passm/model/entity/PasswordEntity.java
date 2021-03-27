@@ -11,10 +11,15 @@ public class PasswordEntity extends Entity {
 	
 	PasswordTable passwordTable = new PasswordTable();
 	
-	private int id;
 	private String password;
 	private String name;
 	private String description;
+	
+	public PasswordEntity() {}
+	
+	public PasswordEntity(int id) {
+		super(id);
+	}
 	
 	public PasswordEntity(String password, String name, String description) {
 		this.password = password;
@@ -29,15 +34,6 @@ public class PasswordEntity extends Entity {
 			name,
 			description
 		};
-	}
-	
-	@Override
-	public int getId() {
-		return id;
-	}
-	
-	public void setId(int id) {
-		this.id = id;
 	}
 	
 	public String getPassword() {
@@ -70,7 +66,7 @@ public class PasswordEntity extends Entity {
 
 	@Override
 	public boolean load(Statement statement) {
-		try (ResultSet rs = passwordTable.getObject(statement, id)) {
+		try (ResultSet rs = passwordTable.getObject(statement, getId())) {
 			this.password = rs.getString(2);
 			this.name = rs.getString(3);
 			this.description = rs.getString(4);

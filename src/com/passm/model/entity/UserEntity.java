@@ -10,9 +10,14 @@ public class UserEntity extends Entity {
 
 	UserTable userTable = new UserTable();
 	
-	private int id;
 	private String name;
 	private int mainPassword;
+	
+	public UserEntity() {}
+	
+	public UserEntity(int id) {
+		super(id);
+	}
 	
 	public UserEntity(String name, int mainPassword) {
 		this.name = name;
@@ -25,15 +30,6 @@ public class UserEntity extends Entity {
 			name,
 			mainPassword
 		};
-	}
-	
-	@Override
-	public int getId() {
-		return id;
-	}
-	
-	public void setId(int id) {
-		this.id = id;
 	}
 	
 	public UserTable getUserTable() {
@@ -62,7 +58,7 @@ public class UserEntity extends Entity {
 
 	@Override
 	public boolean load(Statement statement) {
-		try (ResultSet rs = userTable.getObject(statement, id)) {
+		try (ResultSet rs = userTable.getObject(statement, getId())) {
 			this.name = rs.getString(2);
 			this.mainPassword = rs.getInt(3);
 		} catch (SQLException e) {

@@ -11,6 +11,9 @@ public class DatabaseConnection implements AutoCloseable {
 	private Connection connection;
 	
 	public Connection createConnection() throws SQLException {
+		if(connection != null && !connection.isClosed()) {
+			connection.close();
+		}
 		try {
 			Class.forName("org.sqlite.JDBC");
 		} catch (ClassNotFoundException e) {
