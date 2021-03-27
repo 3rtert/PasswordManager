@@ -17,6 +17,7 @@ public class DatabaseConnection implements AutoCloseable {
 			e.printStackTrace();
 		}
 		connection = DriverManager.getConnection(DATABASE_URL);
+		connection.setAutoCommit(false);
 		return connection;
 	}
 
