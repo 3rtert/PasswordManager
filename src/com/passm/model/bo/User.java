@@ -1,4 +1,4 @@
-package com.passm.model;
+package com.passm.model.bo;
 
 import java.util.List;
 

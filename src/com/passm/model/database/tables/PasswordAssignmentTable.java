@@ -1,6 +1,6 @@
 package com.passm.model.database.tables;
 
-public class PasswordAssignment extends DatabaseTable {
+public class PasswordAssignmentTable extends DatabaseTable {
 	
 	private final static String TABLE_NAME = "PASSWORD_ASSIGNMENT";
 	
@@ -21,9 +21,6 @@ public class PasswordAssignment extends DatabaseTable {
 			+ PASSWORD_ID + " INTEGER, "
 			+ " FOREIGN KEY(" + USER_ID + ") REFERENCES " + UserTable.getTableName() + " (" + UserTable.getId() + ")"
 			+ " FOREIGN KEY(" + PASSWORD_ID + ") REFERENCES " + PasswordTable.getTableName() + " (" + PasswordTable.getId() + "))";
-	
-	private final static String insertSql = "INSERT INTO " + TABLE_NAME + "(" + USER_ID + ", " + PASSWORD_ID + ") "
-			+ "VALUES (";
 
 	@Override
 	protected String[] getColumnNames() {

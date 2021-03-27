@@ -8,5 +8,4 @@ public class ProgramStarter {
 		DatabaseCreator databaseCreator = new DatabaseCreator();
 		databaseCreator.createDatabase();
 	}
-
 }

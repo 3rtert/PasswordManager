@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.util.List;
 
 import com.passm.model.database.tables.DatabaseTable;
+import com.passm.model.database.tables.PasswordAssignmentTable;
 import com.passm.model.database.tables.PasswordTable;
 import com.passm.model.database.tables.UserTable;
 
@@ -15,7 +16,8 @@ public class DatabaseCreator {
 
 	List<DatabaseTable> tables = List.of(
 				new PasswordTable(),
-				new UserTable()
+				new UserTable(),
+				new PasswordAssignmentTable()
 			);
 			
 	public static String getDatabaseUrl() {
