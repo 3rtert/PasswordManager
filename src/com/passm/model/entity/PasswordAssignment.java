@@ -3,26 +3,39 @@ package com.passm.model.entity;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.passm.model.database.tables.DatabaseTable;
 import com.passm.model.database.tables.PasswordAssignmentTable;
 
 public class PasswordAssignment extends Entity {
 	
-	PasswordAssignmentTable passwordAssignmentTable = new PasswordAssignmentTable();
+	static PasswordAssignmentTable passwordAssignmentTable = new PasswordAssignmentTable();
 	
 	private int userId;
 	private int passwordId;
-
-	public PasswordAssignment() {}
 	
-	public PasswordAssignment(int id) {
+	private PasswordAssignment(int id, int userId, int passwordId) {
 		super(id);
-	}
-	
-	public PasswordAssignment(int userId, int passwordId) {
 		this.userId = userId;
 		this.passwordId = passwordId;
+	}
+	
+	public static PasswordAssignment createEntity(int id, int userId, int passwordId) {
+		return new PasswordAssignment(id, userId, passwordId);
+	}
+	
+	public static PasswordAssignment createEntity(int userId, int passwordId) {
+		return new PasswordAssignment(0, userId, passwordId);
+	}
+	
+	public static PasswordAssignment createEntity(int id) {
+		return new PasswordAssignment(id, 0, 0);
+	}
+	
+	public static PasswordAssignment createEntity() {
+		return new PasswordAssignment(0, 0, 0);
 	}
 	
 	@Override
@@ -31,14 +44,6 @@ public class PasswordAssignment extends Entity {
 				userId,
 				passwordId
 			};
-	}
-
-	public PasswordAssignmentTable getPasswordAssignmentTable() {
-		return passwordAssignmentTable;
-	}
-
-	public void setPasswordAssignmentTable(PasswordAssignmentTable passwordAssignmentTable) {
-		this.passwordAssignmentTable = passwordAssignmentTable;
 	}
 
 	public int getUserId() {
@@ -76,5 +81,26 @@ public class PasswordAssignment extends Entity {
 	@Override
 	public boolean validate() {
 		return true;
+	}
+	
+	public static List<PasswordAssignment> getAssignemntsByPasswordId(Statement statement, int id) {
+		return getAssignemntsByForeignId(statement, id, PasswordAssignmentTable.getPasswordId());
+	}
+	
+	public static List<PasswordAssignment> getAssignemntsByUserId(Statement statement, int id) {
+		return getAssignemntsByForeignId(statement, id, PasswordAssignmentTable.getUserId());
+	}
+	
+	private static List<PasswordAssignment> getAssignemntsByForeignId(Statement statement, int id, String foreignIdName) {
+		String sql = "SELECT * FROM " + passwordAssignmentTable.getTable_name() + " o WHERE " + foreignIdName + " = " + Integer.toString(id);
+		List<PasswordAssignment> passwordAssignments = new ArrayList<>();
+		try (ResultSet rs = statement.executeQuery(sql)) {
+			while(rs.next()) {
+				passwordAssignments.add(PasswordAssignment.createEntity(rs.getInt(1), rs.getInt(2), rs.getInt(3)));
+			}
+		} catch (SQLException e) {
+			return null;
+		}
+		return passwordAssignments;
 	}
 }

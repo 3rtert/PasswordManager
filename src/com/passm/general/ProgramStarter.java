@@ -17,11 +17,11 @@ public class ProgramStarter {
 		try(DatabaseConnection databaseConnection = new DatabaseConnection()) {
 			Connection connection = databaseConnection.createConnection();
 			Statement statement1 = connection.createStatement();
-			PasswordEntity passwordEntity = new PasswordEntity("test_password_123", "name_123", "this is my first test password");
+			PasswordEntity passwordEntity = PasswordEntity.createEntity("test_password_123", "name_123", "this is my first test password");
 			passwordEntity.update(statement1);
 			
 			Statement statement2 = connection.createStatement();
-			UserEntity userEntity = new UserEntity("Me", passwordEntity.getId());
+			UserEntity userEntity = UserEntity.createEntity("Me", passwordEntity.getId());
 			userEntity.update(statement2);
 			
 			connection.commit();
@@ -34,7 +34,7 @@ public class ProgramStarter {
 		try(DatabaseConnection databaseConnection = new DatabaseConnection()) {
 			Connection connection = databaseConnection.createConnection();
 			Statement statement2 = connection.createStatement();
-			UserEntity userEntity = new UserEntity(1);
+			UserEntity userEntity = UserEntity.createEntity(1);
 			userEntity.load(statement2);
 			userEntity.setName("new Name");
 			userEntity.update(statement2);
@@ -49,7 +49,7 @@ public class ProgramStarter {
 		try(DatabaseConnection databaseConnection = new DatabaseConnection()) {
 			Connection connection = databaseConnection.createConnection();
 			Statement statement = connection.createStatement();
-			UserEntity userEntity = new UserEntity(1);
+			UserEntity userEntity = UserEntity.createEntity(1);
 			userEntity.load(statement);
 			System.out.println(userEntity.getName());
 			userEntity.delete(statement);
@@ -64,7 +64,7 @@ public class ProgramStarter {
 		try(DatabaseConnection databaseConnection = new DatabaseConnection()) {
 			Connection connection = databaseConnection.createConnection();
 			Statement statement = connection.createStatement();
-			UserEntity userEntity = new UserEntity(1);
+			UserEntity userEntity = UserEntity.createEntity(1);
 			System.out.println(userEntity.exist(statement));
 			userEntity.load(statement);
 			

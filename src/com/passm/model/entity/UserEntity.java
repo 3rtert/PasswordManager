@@ -8,20 +8,31 @@ import com.passm.model.database.tables.UserTable;
 
 public class UserEntity extends Entity {
 
-	UserTable userTable = new UserTable();
+	static UserTable userTable = new UserTable();
 	
 	private String name;
 	private int mainPassword;
 	
-	public UserEntity() {}
-	
-	public UserEntity(int id) {
+	private UserEntity(int id, String name, int mainPassword) {
 		super(id);
-	}
-	
-	public UserEntity(String name, int mainPassword) {
 		this.name = name;
 		this.mainPassword = mainPassword;
+	}
+	
+	public static UserEntity createEntity(int id, String name, int mainPassword) {
+		return new UserEntity(id, name, mainPassword);
+	}
+	
+	public static UserEntity createEntity(String name, int mainPassword) {
+		return new UserEntity(0, name, mainPassword);
+	}
+	
+	public static UserEntity createEntity(int id) {
+		return new UserEntity(id, null, 0);
+	}
+	
+	public static UserEntity createEntity() {
+		return new UserEntity(0, null, 0);
 	}
 	
 	@Override
@@ -35,11 +46,6 @@ public class UserEntity extends Entity {
 	public UserTable getUserTable() {
 		return userTable;
 	}
-
-	public void setUserTable(UserTable userTable) {
-		this.userTable = userTable;
-	}
-
 	public String getName() {
 		return name;
 	}
