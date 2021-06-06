@@ -1,15 +1,44 @@
 package com.passm.model.bo;
 
-public class Password {
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
+
+import com.passm.model.database.DatabaseConnection;
+import com.passm.model.entity.Entity;
+import com.passm.model.entity.PasswordAssignment;
+import com.passm.model.entity.PasswordEntity;
+
+public class Password extends BusinessObject {
+	
+	private PasswordEntity passwordEntity;
 
 	private String password;
 	private String name;
 	private String description;
 	
-	public Password(String password, String name, String description) {
+	private Password(int id, String password, String name, String description) {
+		passwordEntity = PasswordEntity.createEntity(id);
 		this.password = password;
 		this.name = name;
 		this.description = description;
+	}
+	
+	public static Password createObject(int id, String password, String name, String description) {
+		return new Password(id, password, name, description);
+	}
+	
+	public static Password createObject(String password, String name, String description) {
+		return new Password(0, password, name, description);
+	}
+	
+	public static Password createObject(int id) {
+		return new Password(id, null, null, null);
+	}
+	
+	public static Password createObject() {
+		return new Password(0, null, null, null);
 	}
 	
 	public String getPassword() {
@@ -35,5 +64,71 @@ public class Password {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
+	@Override
+	protected Entity getEntity() {
+		return passwordEntity;
+	}
+
+	@Override
+	public boolean load() {
+		boolean result = true;
+		try(DatabaseConnection databaseConnection = new DatabaseConnection()) {
+			Connection connection = databaseConnection.createConnection();
+			Statement statement = connection.createStatement();
+			result = passwordEntity.load(statement);
+			connection.commit();
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		if(result) {
+			setPassword(passwordEntity.getPassword());
+			setName(passwordEntity.getName());
+			setDescription(passwordEntity.getDescription());
+		}
+		return result;
+	}
+
+	@Override
+	public boolean update() {
+		boolean result = true;
+		passwordEntity.setPassword(password);
+		passwordEntity.setName(name);
+		passwordEntity.setDescription(description);
+		try(DatabaseConnection databaseConnection = new DatabaseConnection()) {
+			Connection connection = databaseConnection.createConnection();
+			Statement statement = connection.createStatement();
+			result = passwordEntity.update(statement);
+			connection.commit();
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return result;
+	}
+
+	@Override
+	public boolean delete() {
+		boolean result = true;
+		try(DatabaseConnection databaseConnection = new DatabaseConnection()) {
+			Connection connection = databaseConnection.createConnection();
+			Statement statement = connection.createStatement();
+			if(passwordEntity.exist(statement)) {
+				List<PasswordAssignment> passwordAssignments = PasswordAssignment.getAssignemntsByPasswordId(statement, passwordEntity.getId());
+				for (PasswordAssignment passwordAssignment : passwordAssignments) {
+					result = result && passwordAssignment.delete(statement);
+				}
+				result = result && passwordEntity.delete(statement);
+			}
+			connection.commit();
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return result;
+	}
 }

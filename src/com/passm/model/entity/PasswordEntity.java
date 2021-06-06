@@ -9,22 +9,33 @@ import com.passm.model.database.tables.PasswordTable;
 
 public class PasswordEntity extends Entity {
 	
-	PasswordTable passwordTable = new PasswordTable();
+	static PasswordTable passwordTable = new PasswordTable();
 	
 	private String password;
 	private String name;
 	private String description;
 	
-	public PasswordEntity() {}
-	
-	public PasswordEntity(int id) {
+	private PasswordEntity(int id, String password, String name, String description) {
 		super(id);
-	}
-	
-	public PasswordEntity(String password, String name, String description) {
 		this.password = password;
 		this.name = name;
 		this.description = description;
+	}
+	
+	public static PasswordEntity createEntity(int id, String password, String name, String description) {
+		return new PasswordEntity(id, password, name, description);
+	}
+	
+	public static PasswordEntity createEntity(String password, String name, String description) {
+		return new PasswordEntity(0, password, name, description);
+	}
+	
+	public static PasswordEntity createEntity(int id) {
+		return new PasswordEntity(id, null, null, null);
+	}
+	
+	public static PasswordEntity createEntity() {
+		return new PasswordEntity(0, null, null, null);
 	}
 	
 	@Override
