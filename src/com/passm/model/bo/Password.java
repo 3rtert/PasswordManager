@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import com.passm.model.database.DatabaseConnection;
 import com.passm.model.entity.Entity;
 import com.passm.model.entity.PasswordAssignment;
 import com.passm.model.entity.PasswordEntity;
@@ -71,18 +70,10 @@ public class Password extends BusinessObject {
 	}
 
 	@Override
-	public boolean load() {
+	public boolean load(Connection connection) throws SQLException {
 		boolean result = true;
-		try(DatabaseConnection databaseConnection = new DatabaseConnection()) {
-			Connection connection = databaseConnection.createConnection();
-			Statement statement = connection.createStatement();
-			result = passwordEntity.load(statement);
-			connection.commit();
-		}
-		catch(SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+		Statement statement = connection.createStatement();
+		result = passwordEntity.load(statement);
 		if(result) {
 			setPassword(passwordEntity.getPassword());
 			setName(passwordEntity.getName());
@@ -92,42 +83,26 @@ public class Password extends BusinessObject {
 	}
 
 	@Override
-	public boolean update() {
+	public boolean update(Connection connection) throws SQLException {
 		boolean result = true;
 		passwordEntity.setPassword(password);
 		passwordEntity.setName(name);
 		passwordEntity.setDescription(description);
-		try(DatabaseConnection databaseConnection = new DatabaseConnection()) {
-			Connection connection = databaseConnection.createConnection();
-			Statement statement = connection.createStatement();
-			result = passwordEntity.update(statement);
-			connection.commit();
-		}
-		catch(SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+		Statement statement = connection.createStatement();
+		result = passwordEntity.update(statement);
 		return result;
 	}
 
 	@Override
-	public boolean delete() {
+	public boolean delete(Connection connection) throws SQLException {
 		boolean result = true;
-		try(DatabaseConnection databaseConnection = new DatabaseConnection()) {
-			Connection connection = databaseConnection.createConnection();
-			Statement statement = connection.createStatement();
-			if(passwordEntity.exist(statement)) {
-				List<PasswordAssignment> passwordAssignments = PasswordAssignment.getAssignemntsByPasswordId(statement, passwordEntity.getId());
-				for (PasswordAssignment passwordAssignment : passwordAssignments) {
-					result = result && passwordAssignment.delete(statement);
-				}
-				result = result && passwordEntity.delete(statement);
+		Statement statement = connection.createStatement();
+		if(passwordEntity.exist(statement)) {
+			List<PasswordAssignment> passwordAssignments = PasswordAssignment.getAssignemntsByPasswordId(statement, passwordEntity.getId());
+			for (PasswordAssignment passwordAssignment : passwordAssignments) {
+				result = result && passwordAssignment.delete(statement);
 			}
-			connection.commit();
-		}
-		catch(SQLException e) {
-			e.printStackTrace();
-			return false;
+			result = result && passwordEntity.delete(statement);
 		}
 		return result;
 	}
