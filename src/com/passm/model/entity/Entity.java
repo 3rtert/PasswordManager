@@ -40,7 +40,12 @@ public abstract class Entity {
 				table.update(statement, id, fields);
 			} else {
 				int newId = table.insert(statement, fields);
-				setId(newId);
+				if(newId!=0) {
+					setId(newId);
+				} else {
+					return false;
+				}
+				
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

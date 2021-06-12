@@ -11,11 +11,53 @@ public abstract class BusinessObject {
 	
 	abstract protected Entity getEntity();
 	
-	abstract public boolean load();
+	public boolean load() {
+		boolean result = false;
+		try(DatabaseConnection databaseConnection = new DatabaseConnection()) {
+			Connection connection = databaseConnection.createConnection();
+			result = load(connection);
+			connection.commit();
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return result;
+	}
 	
-	abstract public boolean update();
+	abstract public boolean load(Connection connection) throws SQLException;
 	
-	abstract public boolean delete();
+	public boolean update() {
+		boolean result = false;
+		try(DatabaseConnection databaseConnection = new DatabaseConnection()) {
+			Connection connection = databaseConnection.createConnection();
+			result = update(connection);
+			connection.commit();
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return result;
+	}
+	
+	abstract public boolean update(Connection connection) throws SQLException;
+	
+	public boolean delete() {
+		boolean result = false;
+		try(DatabaseConnection databaseConnection = new DatabaseConnection()) {
+			Connection connection = databaseConnection.createConnection();
+			result = delete(connection);
+			connection.commit();
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return result;
+	}
+	
+	abstract public boolean delete(Connection connection) throws SQLException;
 	
 	public boolean exist() throws SQLException {
 		boolean result = false;
@@ -26,5 +68,9 @@ public abstract class BusinessObject {
 			connection.commit();
 		}
 		return result;
+	}
+	
+	public int getId() {
+		return getEntity().getId();
 	}
 }

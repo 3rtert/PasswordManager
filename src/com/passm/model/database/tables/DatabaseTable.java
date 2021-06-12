@@ -7,13 +7,20 @@ import java.sql.Statement;
 public abstract class DatabaseTable {
 	
 	private final static String ID_FIELD_NAME = "ID";
+	private final static String LAST_INSERT_ROW_ID_SQL = "SELECT last_insert_rowid();";
 	
 	public void createTable(Statement statement) throws SQLException {
 		statement.execute(getCreateSql());
 	}
 	
 	public int insert(Statement statement, Object...values) throws SQLException {
-		return statement.executeUpdate(getInsertSql(getColumnNames(), values));
+		statement.executeUpdate(getInsertSql(getColumnNames(), values));
+		try(ResultSet resultSet = statement.executeQuery(LAST_INSERT_ROW_ID_SQL)){
+			if(resultSet.next()) {
+				return resultSet.getInt(1);
+			}
+			return 0;
+		}
 	}
 	
 	protected String getInsertSql(String[] columns, Object...values) {
@@ -32,12 +39,13 @@ public abstract class DatabaseTable {
 			sb.append("',");
 		}
 		sb.deleteCharAt(sb.length() - 1);
-		sb.append(" );");
+		sb.append(" ); ");
+		sb.append("SELECT last_insert_rowid();");
 		return sb.toString();
 	}
 	
-	public int update(Statement statement, int id, Object...values) throws SQLException {
-		return statement.executeUpdate(getUpdateSql(values, id));
+	public void update(Statement statement, int id, Object...values) throws SQLException {
+		statement.executeUpdate(getUpdateSql(values, id));
 	}
 	
 	protected String getUpdateSql(Object[] values, int id) {
@@ -79,7 +87,9 @@ public abstract class DatabaseTable {
 	}
 
 	public boolean exist(Statement statement, int id) throws SQLException {
-		return getObject(statement, id).next();
+		try(ResultSet resultSet = getObject(statement, id)) {
+			return resultSet.next();
+		}
 	}
 	
 	public ResultSet getObject(Statement statement, int id) throws SQLException {
