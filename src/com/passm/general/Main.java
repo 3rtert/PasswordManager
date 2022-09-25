@@ -5,10 +5,25 @@ import java.util.List;
 import com.passm.model.bo.Password;
 import com.passm.model.bo.User;
 import com.passm.model.database.DatabaseCreator;
+import com.passm.view.console.Console;
+import com.passm.view.console.content.SwingConsole;
+import com.passm.view.console.window.SwingConsoleFrame;
 
 public class Main {
 
 	public static void main(String[] args) {
+		
+		Console console = SwingConsole.createWithUnderscore("Password Manager");
+		console.print("123");
+		console.println("456");
+		console.print("789");
+		console.ln();
+		console.println("0");
+		System.out.println(console.readLine(true));
+		console.println("Test");
+		System.out.println(console.readLine());
+		
+		/*
 		DatabaseCreator databaseCreator = new DatabaseCreator();
 		databaseCreator.createDatabase();
 		
@@ -65,5 +80,6 @@ public class Main {
 		User againAdmin = User.createObject(2);
 		againAdmin.load();
 		System.out.println("Name: " + againAdmin.getName());
+		*/
 	}
 }
