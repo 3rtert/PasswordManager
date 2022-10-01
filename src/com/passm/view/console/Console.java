@@ -15,9 +15,12 @@ public interface Console {
 	public String readLine(boolean hide);
 	public char read();
 	public void registerAction(char activator, Action action);
+	public void clearActions();
+	public void clearActions(char activator);
 	public void enableAction(char activator);
 	public void disableAction(char activator);
 	public void enableAllActions();
 	public void disableAllActions();
+	public void setCaseSensitive(boolean caseSensitive);
 
 }
