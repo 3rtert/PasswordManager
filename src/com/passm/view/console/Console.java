@@ -22,5 +22,12 @@ public interface Console {
 	public void enableAllActions();
 	public void disableAllActions();
 	public void setCaseSensitive(boolean caseSensitive);
+	public void setSize(int width, int height);
+	public int getHeight();
+	public int getWidth();
+	public int getHeightInCharacters();
+	public int getWidthInCharacters();
+	public void setSizeInCharacters(int width, int height);
+	public void setFontSize(int fontSize);
 
 }

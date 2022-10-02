@@ -17,6 +17,18 @@ public class InputListener implements KeyListener {
 	public final static int ENTER = 10;
 	private final static int DELETE = 127;
 	private final static String PLACEHOLDER_WHILE_HIDING = "*";
+	private final static int ARROW_CHAR_VALUE = 65535;
+	private final static int ARROW_UP_CODE = 38;
+	private final static int ARROW_DOWN_CODE = 40;
+	private final static int ARROW_LEFT_CODE = 37;
+	private final static int ARROW_RIGHT_CODE = 39;
+	public final static char ARROW_UP_CHAR_CODE = 1;
+	public final static char ARROW_DOWN_CHAR_CODE = 2;
+	public final static char ARROW_LEFT_CHAR_CODE = 3;
+	public final static char ARROW_RIGHT_CHAR_CODE = 4;
+	
+	private final Map<Integer, Character> ARROW_CODE_TO_CHAR_CODE_MAP; 
+
 
 	private boolean listening;
 	private boolean hideInput;
@@ -35,6 +47,11 @@ public class InputListener implements KeyListener {
 		line = new StringBuilder();
 		this.consoleBufferedText = consoleBufferedText;
 		inputCaseSensitive = false;
+		ARROW_CODE_TO_CHAR_CODE_MAP = new HashMap<>();
+		ARROW_CODE_TO_CHAR_CODE_MAP.put(ARROW_UP_CODE, ARROW_UP_CHAR_CODE);
+		ARROW_CODE_TO_CHAR_CODE_MAP.put(ARROW_DOWN_CODE, ARROW_DOWN_CHAR_CODE);
+		ARROW_CODE_TO_CHAR_CODE_MAP.put(ARROW_LEFT_CODE, ARROW_LEFT_CHAR_CODE);
+		ARROW_CODE_TO_CHAR_CODE_MAP.put(ARROW_RIGHT_CODE, ARROW_RIGHT_CHAR_CODE);
 	}
 
 	protected void enableListening(Function<String, Boolean> conditionToReturnInput, boolean hide) {
@@ -84,7 +101,7 @@ public class InputListener implements KeyListener {
 		activeInputs.keySet().stream()
 				.filter(activator -> shouldInputTrigger(activator, input) && activeInputs.get(activator))
 				.map(activator -> registeredActions.get(activator))
-				.forEach(listOfActions -> listOfActions.forEach(action -> action.activate()));
+				.forEach(listOfActions -> listOfActions.forEach(action -> action.activate(console)));
 	}
 
 	private boolean shouldInputTrigger(char activator, char input) {
@@ -159,6 +176,9 @@ public class InputListener implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		if(e.getKeyChar() == ARROW_CHAR_VALUE && !listening) {
+			processActions(ARROW_CODE_TO_CHAR_CODE_MAP.get(e.getKeyCode()));
+		}
 	}
 
 }

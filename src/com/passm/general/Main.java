@@ -5,20 +5,24 @@ import java.util.List;
 import com.passm.model.bo.Password;
 import com.passm.model.bo.User;
 import com.passm.model.database.DatabaseCreator;
+import com.passm.view.ConsoleView;
 import com.passm.view.console.Action;
 import com.passm.view.console.Console;
 import com.passm.view.console.content.SwingConsole;
 import com.passm.view.console.window.SwingConsoleFrame;
+import com.passm.view.menu.main.MainMenuView;
 
 public class Main {
 
 	public static void main(String[] args) {
 		
-		Console console = SwingConsole.createWithUnderscore("Password Manager");
-		console.registerAction('a', new TestAction());
-		console.registerAction('s', new TestAction());
-		console.registerAction('d', new TestAction());
+		Console console = SwingConsole.create("Password Manager");
 		
+		ConsoleView view = new MainMenuView(console);
+		view.init();
+		
+		
+		/*
 		console.disableAction('s');
 		
 		console.disableAllActions();
@@ -32,7 +36,7 @@ public class Main {
 		
 		
 		
-		/*
+		
 		DatabaseCreator databaseCreator = new DatabaseCreator();
 		databaseCreator.createDatabase();
 		
