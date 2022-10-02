@@ -13,6 +13,9 @@ public class SwingConsole implements Console {
 	private final static String EMPTY = "";
 	private final static String UNDERSCORE = "_";
 	private final static String DEFAULT_NAME = "Console";
+	private final static int DEFAULT_WIDTH_IN_CHARACTERS = 80;
+	private final static int DEFAULT_HEIGHT_IN_CHARACTERS = 25;
+	private final static int DEFAULT_FONT_SIZE = 16;
 
 	private final SwingConsoleFrame frame;
 	private String consoleText;
@@ -42,6 +45,10 @@ public class SwingConsole implements Console {
 		consoleBufferedText = new StringBuilder();
 		inputListener = new InputListener(consoleBufferedText, this);
 		frame = new SwingConsoleFrame(name, inputListener);
+		frame.setResizable(false);
+		frame.setVisible(true);
+		setFontSize(DEFAULT_FONT_SIZE);
+		setSizeInCharacters(DEFAULT_WIDTH_IN_CHARACTERS, DEFAULT_HEIGHT_IN_CHARACTERS);
 		clear();
 		clearActions();
 		setUnderscoreAtTheEnd(underscoreAtTheEnd);
@@ -183,4 +190,38 @@ public class SwingConsole implements Console {
 		inputListener.clearActions(activator);
 	}
 
+	@Override
+	public int getHeight() {
+		return frame.getHeight();
+	}
+
+	@Override
+	public int getWidth() {
+		return frame.getWidth();
+	}
+
+	@Override
+	public int getHeightInCharacters() {
+		return frame.getHeightInCharacters();
+	}
+
+	@Override
+	public int getWidthInCharacters() {
+		return frame.getWidthInCharacters();
+	}
+
+	@Override
+	public void setSize(int width, int height) {
+		frame.setSize(width, height);
+	}
+
+	@Override
+	public void setSizeInCharacters(int width, int height) {
+		frame.setSizeInCharacters(width, height);
+	}
+	
+	@Override
+	public void setFontSize(int fontSize) {
+		frame.setFontSize(fontSize);
+	}
 }
