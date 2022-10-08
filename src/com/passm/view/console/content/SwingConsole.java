@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import java.util.List;
 import java.util.function.Function;
 
+import com.passm.view.ListenerOfActionsThread;
 import com.passm.view.console.Action;
 import com.passm.view.console.Console;
 import com.passm.view.console.window.SwingConsoleFrame;
@@ -25,6 +26,8 @@ public class SwingConsole implements Console {
 	private StringBuilder consoleBufferedText;
 	private boolean underscoreAtTheEnd;
 	private final InputListener inputListener;
+	
+	private ListenerOfActionsThread listenerOfActionsThread;
 
 	private final Function<String, Boolean> LINE_WITH_ENTER_FILLTER = currentLine -> currentLine.length() > 0
 			&& (currentLine.charAt(0) == InputListener.ENTER
@@ -57,6 +60,8 @@ public class SwingConsole implements Console {
 		clear();
 		clearActions();
 		setUnderscoreAtTheEnd(underscoreAtTheEnd);
+		this.listenerOfActionsThread = new ListenerOfActionsThread(this);
+		listenerOfActionsThread.start(); 
 	}
 
 	public void setUnderscoreAtTheEnd(boolean underscoreAtTheEnd) {
@@ -268,6 +273,9 @@ public class SwingConsole implements Console {
 	
 	@Override
 	public void stop() {
+		if(listenerOfActionsThread.isAlive()) {
+			listenerOfActionsThread.interrupt();
+		}
 		System.exit(0);
 	}
 }

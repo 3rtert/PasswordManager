@@ -11,8 +11,6 @@ public abstract class ConsoleView implements View {
 	private final Console console;
 	private View previusView;
 	
-	private ListenerOfActionsThread listenerOfActionsThread;
-	
 	protected ConsoleView(Console console) {
 		this.console = console;
 		
@@ -29,7 +27,6 @@ public abstract class ConsoleView implements View {
 	
 	@Override
 	public void init() {
-		this.listenerOfActionsThread = new ListenerOfActionsThread(console);
 		reset();
 		Action preciousViewStarter = new PreciousViewStarter(this);
 		console.registerAction(InputListener.ESCAPE, preciousViewStarter);
@@ -39,18 +36,12 @@ public abstract class ConsoleView implements View {
 	public void reset() {
 		console.clear();
 		console.clearActions();
-		if(listenerOfActionsThread.isAlive()) {
-			listenerOfActionsThread.interrupt();
-		}
 	}
 	
 	@Override
 	public void update() {
 		console.clear();
 		printTitle();
-		if(!listenerOfActionsThread.isAlive()) {
-			listenerOfActionsThread.start(); 
-		}
 	}
 	
 	protected void printTitle() {
