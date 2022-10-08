@@ -10,6 +10,7 @@ import com.passm.view.console.Action;
 import com.passm.view.console.Console;
 import com.passm.view.console.content.SwingConsole;
 import com.passm.view.console.window.SwingConsoleFrame;
+import com.passm.view.menu.login.LoginView;
 import com.passm.view.menu.main.MainMenuView;
 
 public class Main {
@@ -18,8 +19,8 @@ public class Main {
 		
 		Console console = SwingConsole.create("Password Manager");
 		
-		ConsoleView view = new MainMenuView(console);
-		view.init();
+		ConsoleView loginView = new LoginView(console);
+		loginView.init();
 		
 		
 		/*

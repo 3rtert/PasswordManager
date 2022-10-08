@@ -17,7 +17,6 @@ public class SwingConsoleFrame extends JFrame {
 	public SwingConsoleFrame(String name, InputListener inputListener) {
 		super(name);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocation(100, 50);
 		panel = new ConsolePanel(inputListener);
 		add(panel);
 	}
