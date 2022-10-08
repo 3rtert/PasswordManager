@@ -8,14 +8,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.passm.view.console.Action;
 
 public class InputListener implements KeyListener {
 
-	private final static int BACKSPACE = 8;
-	public final static int ENTER = 10;
-	private final static int DELETE = 127;
+	private final static char BACKSPACE = 8;
+	public final static char ENTER = 10;
+	public final static char ESCAPE = 27;
+	private final static char DELETE = 127;
 	private final static String PLACEHOLDER_WHILE_HIDING = "*";
 	private final static int ARROW_CHAR_VALUE = 65535;
 	private final static int ARROW_UP_CODE = 38;
@@ -29,7 +31,6 @@ public class InputListener implements KeyListener {
 	
 	private final Map<Integer, Character> ARROW_CODE_TO_CHAR_CODE_MAP; 
 
-
 	private boolean listening;
 	private boolean hideInput;
 	private StringBuilder line;
@@ -40,11 +41,14 @@ public class InputListener implements KeyListener {
 	private Map<Character, List<Action>> registeredActions;
 	private Map<Character, Boolean> activeInputs;
 	private boolean inputCaseSensitive;
+	
+	private List<Action> actions;
 
 	protected InputListener(StringBuilder consoleBufferedText, SwingConsole console) {
 		this.console = console;
 		diableListening();
 		line = new StringBuilder();
+		actions = new LinkedList<>();
 		this.consoleBufferedText = consoleBufferedText;
 		inputCaseSensitive = false;
 		ARROW_CODE_TO_CHAR_CODE_MAP = new HashMap<>();
@@ -67,6 +71,10 @@ public class InputListener implements KeyListener {
 	protected StringBuilder getLineObject() {
 		return line;
 	}
+	
+	protected List<Action> getActions(){
+		return actions;
+	}
 
 	protected String getLine() {
 		return line.toString();
@@ -74,34 +82,45 @@ public class InputListener implements KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
+		char input = e.getKeyChar();
+		boolean inputProcessed = false;
 		synchronized (line) {
-			char input = e.getKeyChar();
 			if (listening) {
-				processInput(input);
+				inputProcessed = processInput(input);
 				if (conditionToReturnInput.apply(line.toString())) {
-					line.notify();
+					line.notifyAll();
 				}
-			} else {
-				processActions(input);
 			}
 		}
-
+		if (!listening || !inputProcessed) {
+			synchronized (actions) {
+				processActions(input);
+				if(!actions.isEmpty()) {
+					actions.notifyAll();
+				}
+			}
+		}
 	}
 
-	private void processInput(char input) {
+	private boolean processInput(char input) {
+		boolean inputProcessed = false;
 		if (input == BACKSPACE) {
 			removeLastCharacter();
-		} else if (input != DELETE) {
+			inputProcessed = true;
+		} else if (input != DELETE && input != ESCAPE) {
 			line.append(input);
+			inputProcessed = true;
 		}
 		fillConsoleBufferedText();
+		return inputProcessed;
 	}
 
 	private void processActions(char input) {
-		activeInputs.keySet().stream()
+		actions.addAll(activeInputs.keySet().stream()
 				.filter(activator -> shouldInputTrigger(activator, input) && activeInputs.get(activator))
 				.map(activator -> registeredActions.get(activator))
-				.forEach(listOfActions -> listOfActions.forEach(action -> action.activate(console)));
+				.flatMap(list -> list.stream())
+				.collect(Collectors.toList()));
 	}
 
 	private boolean shouldInputTrigger(char activator, char input) {
@@ -127,7 +146,7 @@ public class InputListener implements KeyListener {
 		} else {
 			consoleBufferedText.append(line);
 		}
-		console.refreshConsoleText();
+		console.refresh();
 	}
 
 	protected void registerAction(char activator, Action action) {
@@ -176,7 +195,7 @@ public class InputListener implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if(e.getKeyChar() == ARROW_CHAR_VALUE && !listening) {
+		if(e.getKeyChar() == ARROW_CHAR_VALUE && ARROW_CODE_TO_CHAR_CODE_MAP.containsKey(e.getKeyCode()) && !listening) {
 			processActions(ARROW_CODE_TO_CHAR_CODE_MAP.get(e.getKeyCode()));
 		}
 	}

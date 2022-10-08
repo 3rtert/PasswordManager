@@ -1,6 +1,9 @@
 package com.passm.view.console.content;
 
+import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Toolkit;
+import java.util.List;
 import java.util.function.Function;
 
 import com.passm.view.console.Action;
@@ -49,6 +52,8 @@ public class SwingConsole implements Console {
 		frame.setVisible(true);
 		setFontSize(DEFAULT_FONT_SIZE);
 		setSizeInCharacters(DEFAULT_WIDTH_IN_CHARACTERS, DEFAULT_HEIGHT_IN_CHARACTERS);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation((int)((screenSize.getWidth() - frame.getWidth()) / 2), (int)((screenSize.getHeight() - frame.getHeight()) / 2));
 		clear();
 		clearActions();
 		setUnderscoreAtTheEnd(underscoreAtTheEnd);
@@ -56,7 +61,7 @@ public class SwingConsole implements Console {
 
 	public void setUnderscoreAtTheEnd(boolean underscoreAtTheEnd) {
 		this.underscoreAtTheEnd = underscoreAtTheEnd;
-		refreshConsoleText();
+		refresh();
 	}
 
 	@Override
@@ -69,42 +74,68 @@ public class SwingConsole implements Console {
 		frame.setName(name);
 	}
 
-	protected void refreshConsoleText() {
+	@Override
+	public void refresh() {
 		String textToShow = consoleText + consoleBufferedText;
 		if (underscoreAtTheEnd) {
 			textToShow += UNDERSCORE;
 		}
 		frame.setText(textToShow);
 	}
-
+	
 	@Override
 	public void print(String text) {
-		print(text, false);
+		print(text, false, true);
 	}
 
 	@Override
 	public void println(String text) {
-		print(text, true);
+		print(text, true, true);
 	}
 
 	@Override
-	public void print(String text, boolean newLine) {
+	public void print(String text, boolean withRefresh) {
+		print(text, false, withRefresh);
+	}
+
+	@Override
+	public void println(String text, boolean withRefresh) {
+		print(text, true, withRefresh);
+	}
+
+	@Override
+	public void print(String text, boolean newLine, boolean withRefresh) {
 		consoleText += text;
 		if (newLine) {
 			consoleText += NEW_LINE;
 		}
-		refreshConsoleText();
+		if(withRefresh) {
+			refresh();
+		}
 	}
 
 	@Override
 	public void ln() {
-		print(EMPTY, true);
+		ln(true);
+	}
+	
+	@Override
+	public void ln(boolean withRefresh) {
+		print(EMPTY, true, withRefresh);
+	}
+	
+	@Override
+	public void clear(boolean withRefresh) {
+		consoleText = EMPTY;
+		consoleBufferedText.setLength(0);
+		if(withRefresh) {
+			refresh();
+		}
 	}
 
 	@Override
 	public void clear() {
-		consoleText = EMPTY;
-		consoleBufferedText.setLength(0);
+		clear(false);
 	}
 
 	@Override
@@ -191,6 +222,11 @@ public class SwingConsole implements Console {
 	}
 
 	@Override
+	public List<Action> getActions() {
+		return inputListener.getActions();
+	}
+	
+	@Override
 	public int getHeight() {
 		return frame.getHeight();
 	}
@@ -221,7 +257,17 @@ public class SwingConsole implements Console {
 	}
 	
 	@Override
+	public void setLocation(int x, int y) {
+		frame.setLocation(x, y);
+	}
+	
+	@Override
 	public void setFontSize(int fontSize) {
 		frame.setFontSize(fontSize);
+	}
+	
+	@Override
+	public void stop() {
+		System.exit(0);
 	}
 }
