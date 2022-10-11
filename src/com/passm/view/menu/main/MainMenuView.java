@@ -3,6 +3,7 @@ package com.passm.view.menu.main;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import com.passm.view.ConsoleView;
 import com.passm.view.View;
@@ -11,6 +12,8 @@ import com.passm.view.console.Console;
 import com.passm.view.console.content.InputListener;
 
 public class MainMenuView extends ConsoleView {
+	
+	private final static Logger LOGGER = Logger.getLogger(MainMenuView.class.getName());
 
 	private final static String TITLE = " Main Menu ";
 	private final static String SELECTION = ">> ";
@@ -37,6 +40,7 @@ public class MainMenuView extends ConsoleView {
 		console.registerAction(InputListener.ARROW_DOWN_CHAR_CODE, nextOptionSelector);
 		Action selectOption = new OptionSelector(this);
 		console.registerAction(InputListener.ENTER, selectOption);
+		LOGGER.info("Initialization finished");
 		update();
 	}
 	
@@ -102,5 +106,10 @@ public class MainMenuView extends ConsoleView {
 	@Override
 	protected String getTitle() {
 		return TITLE;
+	}
+	
+	@Override
+	protected String getName() {
+		return MainMenuView.class.getName();
 	}
 }

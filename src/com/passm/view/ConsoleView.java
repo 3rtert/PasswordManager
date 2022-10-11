@@ -1,10 +1,14 @@
 package com.passm.view;
 
+import java.util.logging.Logger;
+
 import com.passm.view.console.Action;
 import com.passm.view.console.Console;
 import com.passm.view.console.content.InputListener;
 
 public abstract class ConsoleView implements View {
+	
+	private final static Logger LOGGER = Logger.getLogger(ConsoleView.class.getName());
 	
 	private final static String ORNAMENT = "-";
 
@@ -27,6 +31,7 @@ public abstract class ConsoleView implements View {
 	
 	@Override
 	public void init() {
+		LOGGER.info("Start initialization of " + getName());
 		reset();
 		Action preciousViewStarter = new PreciousViewStarter(this);
 		console.registerAction(InputListener.ESCAPE, preciousViewStarter);
@@ -34,12 +39,14 @@ public abstract class ConsoleView implements View {
 	
 	@Override
 	public void reset() {
+		LOGGER.info("Start reset of " + getName());
 		console.clear();
 		console.clearActions();
 	}
 	
 	@Override
 	public void update() {
+		LOGGER.info("Start update of " + getName());
 		console.clear();
 		printTitle();
 	}
@@ -59,14 +66,18 @@ public abstract class ConsoleView implements View {
 		return (console.getWidthInCharacters() - getTitle().length()) / 2 / ORNAMENT.length();
 	}
 	
-	abstract protected String getTitle();
-	
 	@Override
 	public void startPreviousView() {
 		if(previusView == null) {
+			LOGGER.info("Application stoped by ESCAPE");
 			console.stop();
 		}
+		LOGGER.info("Go to previous view by ESCAPE");
 		reset();
 		previusView.init();
 	}
+	
+	abstract protected String getTitle();
+	
+	abstract protected String getName();
 }
