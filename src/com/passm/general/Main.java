@@ -1,28 +1,48 @@
 package com.passm.general;
 
-import java.util.List;
-
-import com.passm.model.bo.Password;
-import com.passm.model.bo.User;
-import com.passm.model.database.DatabaseCreator;
 import com.passm.view.ConsoleView;
-import com.passm.view.console.Action;
 import com.passm.view.console.Console;
 import com.passm.view.console.content.SwingConsole;
-import com.passm.view.console.window.SwingConsoleFrame;
 import com.passm.view.menu.login.LoginView;
-import com.passm.view.menu.main.MainMenuView;
 
 public class Main {
 
 	public static void main(String[] args) {
 		
+		LogHandler.setup();
 		Console console = SwingConsole.create("Password Manager");
 		
 		ConsoleView loginView = new LoginView(console);
 		loginView.init();
 		
+		/*LogManager.getLogManager().reset();
 		
+		Handler[] h = logger.getHandlers();
+		
+		Handler consoleHandler = new ConsoleHandler();
+		
+		consoleHandler.setFormatter(new LogFormatter(false));
+		
+        //logger.addHandler(consoleHandler);
+		
+        
+        StreamHandler sh = new StreamHandler(System.out, new LogFormatter(false));
+        logger.addHandler(sh);
+
+        try {
+            //FileHandler file name with max size and number of log files limit
+            Handler fileHandler = new FileHandler("log/%g_log.log", 1024 * 1024 * 5, 10);
+            fileHandler.setFormatter(new LogFormatter());
+            logger.addHandler(fileHandler);
+            
+            for(int i=0; i<1000; i++){
+                //logging messages
+                logger.log(Level.INFO, "Msg"+i);
+            }
+            logger.log(Level.CONFIG, "Config data");
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }*/
 		/*
 		console.disableAction('s');
 		
