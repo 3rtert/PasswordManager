@@ -8,11 +8,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import com.passm.view.console.Action;
 
 public class InputListener implements KeyListener {
+	
+	private final static Logger LOGGER = Logger.getLogger(InputListener.class.getName());
 
 	private final static char BACKSPACE = 8;
 	public final static char ENTER = 10;
@@ -56,16 +59,19 @@ public class InputListener implements KeyListener {
 		ARROW_CODE_TO_CHAR_CODE_MAP.put(ARROW_DOWN_CODE, ARROW_DOWN_CHAR_CODE);
 		ARROW_CODE_TO_CHAR_CODE_MAP.put(ARROW_LEFT_CODE, ARROW_LEFT_CHAR_CODE);
 		ARROW_CODE_TO_CHAR_CODE_MAP.put(ARROW_RIGHT_CODE, ARROW_RIGHT_CHAR_CODE);
+		LOGGER.info("InputListener inicialized");
 	}
 
 	protected void enableListening(Function<String, Boolean> conditionToReturnInput, boolean hide) {
 		this.conditionToReturnInput = conditionToReturnInput;
 		hideInput = hide;
 		listening = true;
+		LOGGER.info("Listening enabled");
 	}
 
 	protected void diableListening() {
 		listening = false;
+		LOGGER.info("Listening disabled");
 	}
 
 	protected StringBuilder getLineObject() {
@@ -103,6 +109,7 @@ public class InputListener implements KeyListener {
 	}
 
 	private boolean processInput(char input) {
+		LOGGER.info("Procesing input: " + input);
 		boolean inputProcessed = false;
 		if (input == BACKSPACE) {
 			removeLastCharacter();
@@ -116,6 +123,7 @@ public class InputListener implements KeyListener {
 	}
 
 	private void processActions(char input) {
+		LOGGER.info("Procesing action: " + input);
 		actions.addAll(activeInputs.keySet().stream()
 				.filter(activator -> shouldInputTrigger(activator, input) && activeInputs.get(activator))
 				.map(activator -> registeredActions.get(activator))
@@ -150,6 +158,7 @@ public class InputListener implements KeyListener {
 	}
 
 	protected void registerAction(char activator, Action action) {
+		LOGGER.info("Register action: " + activator);
 		if (registeredActions.containsKey(activator)) {
 			registeredActions.get(activator).add(action);
 		}
@@ -161,18 +170,22 @@ public class InputListener implements KeyListener {
 
 	protected void enableAction(char activator) {
 		activeInputs.put(activator, Boolean.TRUE);
+		LOGGER.info("Action enabled: " + activator);
 	}
 
 	protected void disableAction(char activator) {
 		activeInputs.put(activator, Boolean.FALSE);
+		LOGGER.info("Action disabled: " + activator);
 	}
 
 	protected void enableAllActions() {
 		activeInputs.keySet().forEach(action -> activeInputs.put(action, Boolean.TRUE));
+		LOGGER.info("All action enabled");
 	}
 
 	protected void disableAllActions() {
 		activeInputs.keySet().forEach(action -> activeInputs.put(action, Boolean.FALSE));
+		LOGGER.info("All action disabled");
 	}
 
 	protected void setCaseSensitive(boolean caseSensitive) {
@@ -182,11 +195,13 @@ public class InputListener implements KeyListener {
 	protected void clearActions() {
 		registeredActions = new HashMap<>();
 		activeInputs = new HashMap<>();
+		LOGGER.info("All action cleared");
 	}
 
 	protected void clearActions(char activator) {
 		registeredActions.remove(activator);
 		activeInputs.remove(activator);
+		LOGGER.info("Action cleared: " + activator);
 	}
 
 	@Override

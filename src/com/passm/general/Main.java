@@ -1,5 +1,6 @@
 package com.passm.general;
 
+import com.passm.general.log.LogHandler;
 import com.passm.view.ConsoleView;
 import com.passm.view.console.Console;
 import com.passm.view.console.content.SwingConsole;

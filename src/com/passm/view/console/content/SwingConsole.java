@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.util.List;
 import java.util.function.Function;
+import java.util.logging.Logger;
 
 import com.passm.view.ListenerOfActionsThread;
 import com.passm.view.console.Action;
@@ -12,6 +13,8 @@ import com.passm.view.console.Console;
 import com.passm.view.console.window.SwingConsoleFrame;
 
 public class SwingConsole implements Console {
+	
+	private final static Logger LOGGER = Logger.getLogger(SwingConsole.class.getName());
 
 	private final static String NEW_LINE = "\n";
 	private final static String EMPTY = "";
@@ -48,6 +51,7 @@ public class SwingConsole implements Console {
 	}
 
 	private SwingConsole(String name, boolean underscoreAtTheEnd) {
+		LOGGER.info("Initializing of SwingConsole");
 		consoleBufferedText = new StringBuilder();
 		inputListener = new InputListener(consoleBufferedText, this);
 		frame = new SwingConsoleFrame(name, inputListener);
@@ -62,6 +66,7 @@ public class SwingConsole implements Console {
 		setUnderscoreAtTheEnd(underscoreAtTheEnd);
 		this.listenerOfActionsThread = new ListenerOfActionsThread(this);
 		listenerOfActionsThread.start(); 
+		LOGGER.info("SwingConsole inizialized");
 	}
 
 	public void setUnderscoreAtTheEnd(boolean underscoreAtTheEnd) {
@@ -86,6 +91,7 @@ public class SwingConsole implements Console {
 			textToShow += UNDERSCORE;
 		}
 		frame.setText(textToShow);
+		LOGGER.info("Console refreshed");
 	}
 	
 	@Override
@@ -136,6 +142,7 @@ public class SwingConsole implements Console {
 		if(withRefresh) {
 			refresh();
 		}
+		LOGGER.info("Console cleared");
 	}
 
 	@Override
@@ -165,7 +172,7 @@ public class SwingConsole implements Console {
 				return result;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.warning(e.getMessage());
 		}
 		return result;
 	}
@@ -181,7 +188,7 @@ public class SwingConsole implements Console {
 				return line.toString().charAt(0);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.warning(e.getMessage());
 		}
 		return 0;
 	}
@@ -273,6 +280,7 @@ public class SwingConsole implements Console {
 	
 	@Override
 	public void stop() {
+		LOGGER.info("Stopping console...");
 		if(listenerOfActionsThread.isAlive()) {
 			listenerOfActionsThread.interrupt();
 		}
