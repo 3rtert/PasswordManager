@@ -110,6 +110,6 @@ public class MainMenuView extends ConsoleView {
 	
 	@Override
 	protected String getName() {
-		return MainMenuView.class.getName();
+		return MainMenuView.class.getSimpleName();
 	}
 }

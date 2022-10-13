@@ -109,7 +109,7 @@ public class InputListener implements KeyListener {
 	}
 
 	private boolean processInput(char input) {
-		LOGGER.info("Procesing input: " + input);
+		LOGGER.info("Procesing input");
 		boolean inputProcessed = false;
 		if (input == BACKSPACE) {
 			removeLastCharacter();
