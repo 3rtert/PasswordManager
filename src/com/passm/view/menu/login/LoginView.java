@@ -56,6 +56,6 @@ public class LoginView extends ConsoleView {
 
 	@Override
 	protected String getName() {
-		return LoginView.class.getName();
+		return LoginView.class.getSimpleName();
 	}
 }
