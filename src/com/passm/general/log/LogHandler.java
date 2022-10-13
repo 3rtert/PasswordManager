@@ -1,4 +1,4 @@
-package com.passm.general;
+package com.passm.general.log;
 
 import java.io.IOException;
 import java.util.logging.FileHandler;
@@ -6,9 +6,6 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
-
-import com.passm.general.log.ConsoleHandler;
-import com.passm.general.log.LogFormatter;
 
 public class LogHandler {
 

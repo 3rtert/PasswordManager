@@ -1,13 +1,16 @@
 package com.passm.view;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.passm.view.console.Action;
 import com.passm.view.console.Console;
 
 public class ListenerOfActionsThread extends Thread {
 	
-	//private double random = Math.random();
+	private final static Logger LOGGER = Logger.getLogger(ListenerOfActionsThread.class.getName());
+	
+	private double ID = Math.random();
 	
 	private final Console console;
 	
@@ -17,21 +20,21 @@ public class ListenerOfActionsThread extends Thread {
 	
 	@Override
 	public void run() {
-		//System.out.println("Started " + random);
+		LOGGER.info("Listener thread started: " + ID);
 		boolean isRunning = true;
 		List<Action> actions = console.getActions();
 		while(isRunning) {
 			try {
 				synchronized (actions) {
 					actions.wait();
-					//System.out.println("Actions: " + actions.size() + " " + random);
+					LOGGER.info("Action detected: " + ID);
 					if(!actions.isEmpty()) {
 						performActionsInThread(actions);
 					}
 				}
 			} catch (InterruptedException e) {
 				isRunning = false;
-				//System.out.println("Stoped " + random);
+				LOGGER.info("Listener thread stopped: " + ID);
 			}
 		}
 	}
@@ -46,7 +49,9 @@ public class ListenerOfActionsThread extends Thread {
 
 	private class PerformerOfActionsThread extends Thread {
 		
-		Action action;
+		private double ID = Math.random();
+		
+		private Action action;
 		
 		private PerformerOfActionsThread(Action action) {
 			this.action = action;
@@ -54,6 +59,7 @@ public class ListenerOfActionsThread extends Thread {
 		
 		@Override
 		public void run() {
+			LOGGER.info("Perform action in thread: " + ID);
 			action.activate(console);
 		}
 	}
