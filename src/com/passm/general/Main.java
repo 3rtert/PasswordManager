@@ -1,27 +1,13 @@
 package com.passm.general;
 
-import com.passm.controller.LoginController;
-import com.passm.general.log.LogHandler;
-import com.passm.model.crypt.DatabaseEncrypterDecrypter;
-import com.passm.model.database.DatabaseCreator;
-import com.passm.view.console.Console;
-import com.passm.view.console.content.SwingConsole;
-import com.passm.view.menu.login.LoginView;
+import com.passm.controller.StartController;
 
 public class Main {
 
 	public static void main(String[] args) {
-		LogHandler.setup();
-		if(!DatabaseEncrypterDecrypter.isDatabaseEncypted()) {
-			DatabaseCreator databaseCreator = new DatabaseCreator();
-			//selection of first password
-			databaseCreator.createDatabase("pass");
-		}
-		Console console = SwingConsole.create("Password Manager");
-		LoginView loginView = new LoginView(console);
-		LoginController loginController = new LoginController(loginView);
-		loginController.run();
 		
+		StartController startController = new StartController();
+		startController.run();
 		
 		
 		

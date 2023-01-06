@@ -6,8 +6,6 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.passm.model.bo.Password;
-import com.passm.model.bo.User;
 import com.passm.model.crypt.DatabaseEncrypterDecrypter;
 import com.passm.model.database.tables.DatabaseTable;
 import com.passm.model.database.tables.PasswordAssignmentTable;
@@ -35,28 +33,23 @@ public class DatabaseCreator {
 		return DATABASE_NAME;
 	}
 	
-	public void createDatabase() {
+	private boolean createDatabase() {
 		try(DatabaseConnection databaseConnection = new DatabaseConnection()) {
 			Connection connection = databaseConnection.createConnection();
 			createTables(connection);
 			connection.commit();
-			
-			//temporary until creation of the first password will be no completed
-			connection = databaseConnection.createConnection();
-			Password password = Password.createObject("pass", "Main", "MainTemporaryPassword");
-			password.update();
-			User admin = User.createObject("Admin", password);
-			admin.update();
-			connection.commit();
+			return true;
 		} catch (Exception e) {
 			LOGGER.warning(e.getMessage());
+			return false;
 		}
 	}
 	
-	public void createDatabase(String password) {
-		createDatabase();
+	public boolean createDatabase(String password) {
+		boolean createdSuccessfully = createDatabase();
 		DatabaseEncrypterDecrypter databaseEncrypterDecrypter = new DatabaseEncrypterDecrypter(password.toCharArray());
-		databaseEncrypterDecrypter.encrypt();
+		createdSuccessfully = createdSuccessfully && databaseEncrypterDecrypter.encrypt();
+		return createdSuccessfully;
 	}
 	
 	private void createTables(Connection connection) {
