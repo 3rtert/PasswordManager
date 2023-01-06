@@ -5,15 +5,15 @@ import com.passm.view.console.Console;
 
 public class OptionSelector implements Action {
 
-	private final MainMenuView view;
+	private final MainMenuView mainMenuView;
 	
-	public OptionSelector(MainMenuView view) {
-		this.view = view;
+	public OptionSelector(MainMenuView mainMenuView) {
+		this.mainMenuView = mainMenuView;
 	}
 
 	@Override
 	public void activate(Console console) {
-		view.select();
+		mainMenuView.select();
 	}
 
 }

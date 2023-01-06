@@ -2,30 +2,32 @@ package com.passm.view;
 
 import java.util.logging.Logger;
 
+import com.passm.controller.Controller;
 import com.passm.view.console.Action;
 import com.passm.view.console.Console;
 import com.passm.view.console.content.InputListener;
 
-public abstract class ConsoleView implements View {
+public abstract class ConsoleView<T extends Controller> implements View<T> {
 	
 	private final static Logger LOGGER = Logger.getLogger(ConsoleView.class.getName());
 	
 	private final static String ORNAMENT = "-";
 
 	private final Console console;
-	private View previusView;
+	
+	protected T controller;
 	
 	protected ConsoleView(Console console) {
 		this.console = console;
 		
 	}
 	
-	protected ConsoleView(Console console, View previusView) {
-		this.console = console;
-		this.previusView = previusView;
+	@Override
+	public void setController(T controller) {
+		this.controller = controller;
 	}
 	
-	protected Console getConsole() {
+	public Console getConsole() {
 		return console;
 	}
 	
@@ -33,7 +35,7 @@ public abstract class ConsoleView implements View {
 	public void init() {
 		LOGGER.info("Start initialization of " + getName());
 		reset();
-		Action preciousViewStarter = new PreciousViewStarter(this);
+		Action preciousViewStarter = new PreciousViewStarter(this, controller);
 		console.registerAction(InputListener.ESCAPE, preciousViewStarter);
 	}
 	
@@ -64,17 +66,6 @@ public abstract class ConsoleView implements View {
 	
 	protected int getLeftMarginLength() {
 		return (console.getWidthInCharacters() - getTitle().length()) / 2 / ORNAMENT.length();
-	}
-	
-	@Override
-	public void startPreviousView() {
-		if(previusView == null) {
-			LOGGER.info("Application stoped by ESCAPE");
-			console.stop();
-		}
-		LOGGER.info("Go to previous view by ESCAPE");
-		reset();
-		previusView.init();
 	}
 	
 	abstract protected String getTitle();
