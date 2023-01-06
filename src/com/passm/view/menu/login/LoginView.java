@@ -2,11 +2,11 @@ package com.passm.view.menu.login;
 
 import java.util.logging.Logger;
 
+import com.passm.controller.LoginController;
 import com.passm.view.ConsoleView;
 import com.passm.view.console.Console;
-import com.passm.view.menu.main.MainMenuView;
 
-public class LoginView extends ConsoleView {
+public class LoginView extends ConsoleView<LoginController> {
 	
 	private final static Logger LOGGER = Logger.getLogger(LoginView.class.getName());
 	
@@ -32,21 +32,15 @@ public class LoginView extends ConsoleView {
 		while(!isPasswordCorrect) {
 			console.print(MAIN_PASSWORD_MESSAGE);
 			String password = console.readLine(true);
-			if(isPasswordCorrect(password)) {
+			if(controller.isPasswordCorrect(password)) {
 				LOGGER.info("Password correct");
 				isPasswordCorrect = true;
-				MainMenuView mainMenu = new MainMenuView(console, this);
-				reset();
-				mainMenu.init();
+				controller.acceptPassword();
 			} else {
 				LOGGER.info("Password incorrect");
 				console.ln();
 			}
 		}
-	}
-
-	private boolean isPasswordCorrect(String password) {
-		return "pass".equals(password);
 	}
 
 	@Override

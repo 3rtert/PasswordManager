@@ -1,31 +1,28 @@
 package com.passm.view.menu.main;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 
+import com.passm.controller.MainMenuController;
 import com.passm.view.ConsoleView;
-import com.passm.view.View;
 import com.passm.view.console.Action;
 import com.passm.view.console.Console;
 import com.passm.view.console.content.InputListener;
 
-public class MainMenuView extends ConsoleView {
+public class MainMenuView extends ConsoleView<MainMenuController> {
 	
 	private final static Logger LOGGER = Logger.getLogger(MainMenuView.class.getName());
 
 	private final static String TITLE = " Main Menu ";
 	private final static String SELECTION = ">> ";
-
-	private final static String[] SELECTABLE_OPTINS = { "List of passwords", "Add new password", "Change password", "Remove password", "Update main password", "Settings" };
-	private final Map<String, View> SELECTABLE_OPTINS_TO_VIEWS;
+	
+	private String[] selectableOptions;
 
 	private int position = 1;
 
-	public MainMenuView(Console console, View previousView) {
-		super(console, previousView);
-		SELECTABLE_OPTINS_TO_VIEWS = new HashMap<>();
+	public MainMenuView(Console console) {
+		super(console);
+		
 	}
 	
 	@Override
@@ -44,8 +41,12 @@ public class MainMenuView extends ConsoleView {
 		update();
 	}
 	
+	public void setSelectableOptions(String[] selectableOptions) {
+		this.selectableOptions = selectableOptions;
+	}
+	
 	public void selectNextOption() {
-		if(position == SELECTABLE_OPTINS.length) {
+		if(position == selectableOptions.length) {
 			position = 1;
 		} else {
 			position++;
@@ -55,7 +56,7 @@ public class MainMenuView extends ConsoleView {
 	
 	public void selectPreviousOption() {
 		if(position == 1) {
-			position = SELECTABLE_OPTINS.length;
+			position = selectableOptions.length;
 		} else {
 			position--;
 		}
@@ -63,11 +64,7 @@ public class MainMenuView extends ConsoleView {
 	}
 	
 	public void select() {
-		View nextView = SELECTABLE_OPTINS_TO_VIEWS.get(SELECTABLE_OPTINS[position-1]);
-		if(nextView != null) {
-			reset();
-			nextView.init();
-		}
+		controller.select(position);
 	}
 
 	@Override
@@ -83,18 +80,18 @@ public class MainMenuView extends ConsoleView {
 		String marginWithSelection = " ".repeat(leftMarginLength - SELECTION.length()) + SELECTION;
 		console.ln(false);
 		console.ln(false);
-		for (int i = 0; i < SELECTABLE_OPTINS.length; i++) {
+		for (int i = 0; i < selectableOptions.length; i++) {
 			if (i + 1 == position) {
-				console.println(marginWithSelection + SELECTABLE_OPTINS[i], false);
+				console.println(marginWithSelection + selectableOptions[i], false);
 			} else {
-				console.println(margin + SELECTABLE_OPTINS[i], false);
+				console.println(margin + selectableOptions[i], false);
 			}
 		}
 		console.refresh();
 	}
 	
 	private int getAverageLengthOfSelectableOptions() {
-		return (int) Arrays.asList(SELECTABLE_OPTINS).stream().map(option -> option.length()).mapToInt(Integer::intValue).average().getAsDouble();
+		return (int) Arrays.asList(selectableOptions).stream().map(option -> option.length()).mapToInt(Integer::intValue).average().getAsDouble();
 	}
 
 	@Override

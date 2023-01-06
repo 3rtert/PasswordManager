@@ -6,8 +6,6 @@ import java.sql.SQLException;
 
 public class DatabaseConnection implements AutoCloseable {
 	
-	private final static String DATABASE_URL = "jdbc:sqlite:passman.db";
-	
 	private Connection connection;
 	
 	public Connection createConnection() throws SQLException {
@@ -19,7 +17,7 @@ public class DatabaseConnection implements AutoCloseable {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		connection = DriverManager.getConnection(DATABASE_URL);
+		connection = DriverManager.getConnection(DatabaseCreator.getDatabaseUrl());
 		connection.setAutoCommit(false);
 		return connection;
 	}
@@ -27,9 +25,5 @@ public class DatabaseConnection implements AutoCloseable {
 	@Override
 	public void close() throws SQLException {
 		connection.close();
-	}
-	
-	public static String getDatabaseUrl() {
-		return DATABASE_URL;
 	}
 }
