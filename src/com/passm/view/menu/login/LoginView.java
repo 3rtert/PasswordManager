@@ -6,13 +6,15 @@ import com.passm.controller.LoginController;
 import com.passm.view.ConsoleView;
 import com.passm.view.console.Console;
 
-public class LoginView extends ConsoleView<LoginController> {
+public class LoginView extends ConsoleView<LoginController, LoginView> {
 	
 	private final static Logger LOGGER = Logger.getLogger(LoginView.class.getName());
 	
 	private final static String TITLE = " Login ";
 	private final static String MAIN_PASSWORD_MESSAGE = "Password: ";
 
+	LoginController loginController;
+	
 	public LoginView(Console console) {
 		super(console);
 	}

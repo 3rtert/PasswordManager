@@ -13,9 +13,9 @@ public class PasswordTable extends DatabaseTable {
 	private final static String PASSWORD_HASH = "PASSWORD_HASH";
 	
 	private final static String[] COLUMN_NAMES = {
+			PASSWORD_HASH,
 			NAME,
-			DESCRIPTION,
-			PASSWORD_HASH
+			DESCRIPTION
 	};
 	
 	private final static String createSql = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME

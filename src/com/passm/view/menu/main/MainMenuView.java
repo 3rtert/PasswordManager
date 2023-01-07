@@ -9,7 +9,7 @@ import com.passm.view.console.Action;
 import com.passm.view.console.Console;
 import com.passm.view.console.content.InputListener;
 
-public class MainMenuView extends ConsoleView<MainMenuController> {
+public class MainMenuView extends ConsoleView<MainMenuController, MainMenuView> {
 	
 	private final static Logger LOGGER = Logger.getLogger(MainMenuView.class.getName());
 

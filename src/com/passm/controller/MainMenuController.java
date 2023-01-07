@@ -3,33 +3,37 @@ package com.passm.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.passm.model.config.Configuration;
+import com.passm.view.CreatePasswordView;
 import com.passm.view.menu.main.MainMenuView;
 
-public class MainMenuController extends Controller {
+public class MainMenuController extends ConsoleController<MainMenuController, MainMenuView> {
 	
 	private final static String[] SELECTABLE_OPTIONS = { "List of passwords", "Add new password", "Change password", "Remove password", "Update main password", "Settings" };
-	private final Map<String, Controller> SELECTABLE_OPTINS_TO_CONTROLLERS;
-
-	MainMenuView mainMenuView;
+	private final Map<String, ConsoleController<?, ?>> SELECTABLE_OPTINS_TO_CONTROLLERS;
 	
-	public MainMenuController(MainMenuView mainMenuView, Controller prevoiusController) {
-		super(prevoiusController);
-		this.mainMenuView = mainMenuView;
+	public MainMenuController(MainMenuView mainMenuView, ConsoleController<?, ?> prevoiusController, Configuration configuration) {
+		super(prevoiusController, mainMenuView, configuration);
 		this.SELECTABLE_OPTINS_TO_CONTROLLERS = new HashMap<>();
+		SELECTABLE_OPTINS_TO_CONTROLLERS.put(SELECTABLE_OPTIONS[1], new CreatePasswordController(new CreatePasswordView(view.getConsole()), this, configuration));
 	}
 	
 	@Override
 	public void run() {
-		mainMenuView.setSelectableOptions(SELECTABLE_OPTIONS);
-		mainMenuView.setController(this);
-		mainMenuView.init();
+		view.setSelectableOptions(SELECTABLE_OPTIONS);
+		super.run();
 	}
 	
 	public void select(int position) {
-		Controller nextController = SELECTABLE_OPTINS_TO_CONTROLLERS.get(SELECTABLE_OPTIONS[position-1]);
+		ConsoleController<?, ?> nextController = SELECTABLE_OPTINS_TO_CONTROLLERS.get(SELECTABLE_OPTIONS[position-1]);
 		if(nextController != null) {
-			mainMenuView.reset();
+			view.reset();
 			nextController.run();
 		}
+	}
+
+	@Override
+	public MainMenuController getInstance() {
+		return this;
 	}
 }

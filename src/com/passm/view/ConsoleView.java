@@ -7,28 +7,27 @@ import com.passm.view.console.Action;
 import com.passm.view.console.Console;
 import com.passm.view.console.content.InputListener;
 
-public abstract class ConsoleView<T extends Controller> implements View<T> {
+public abstract class ConsoleView<C extends Controller<C, V>, V extends View<C,V>> implements View<C,V> {
 	
 	private final static Logger LOGGER = Logger.getLogger(ConsoleView.class.getName());
 	
 	private final static String ORNAMENT = "-";
 
 	private final Console console;
-	
-	protected T controller;
+	protected C controller;
 	
 	protected ConsoleView(Console console) {
 		this.console = console;
 		
 	}
 	
-	@Override
-	public void setController(T controller) {
-		this.controller = controller;
-	}
-	
 	public Console getConsole() {
 		return console;
+	}
+	
+	@Override
+	public void setController(C controller) {
+		this.controller = controller;
 	}
 	
 	@Override

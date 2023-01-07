@@ -21,7 +21,7 @@ public class LogHandler {
         
         rootLogger.addHandler(streamHandler);
         try {
-			Handler fileHandler = new FileHandler("log/%g_log.log", 1024 * 1024 * 5, 10);
+			Handler fileHandler = new FileHandler("log/%g_log.log", 1024 * 1024 * 5, 100);
 			fileHandler.setFormatter(new LogFormatter(true));
 			rootLogger.addHandler(fileHandler);
 		} catch (SecurityException | IOException e) {
