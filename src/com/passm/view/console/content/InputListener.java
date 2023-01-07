@@ -203,6 +203,10 @@ public class InputListener implements KeyListener {
 		activeInputs.remove(activator);
 		LOGGER.info("Action cleared: " + activator);
 	}
+	
+	protected void clearBuffer() {
+		line = new StringBuilder();
+	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {

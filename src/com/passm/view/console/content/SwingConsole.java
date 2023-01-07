@@ -286,4 +286,10 @@ public class SwingConsole implements Console {
 		}
 		System.exit(0);
 	}
+	
+	@Override
+	public void diableListening() {
+		inputListener.diableListening();
+		inputListener.clearBuffer();
+	}
 }

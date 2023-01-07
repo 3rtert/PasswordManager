@@ -38,5 +38,6 @@ public interface Console {
 	public void setLocation(int x, int y);
 	public void setFontSize(int fontSize);
 	public void stop();
+	public void diableListening();
 
 }
