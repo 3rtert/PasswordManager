@@ -6,10 +6,10 @@ import com.passm.view.console.Console;
 
 public class PreciousViewStarter implements Action {
 	
-	private Controller controller;
-	private View<?> view;
+	private Controller<?,?> controller;
+	private View<?,?> view;
 	
-	protected PreciousViewStarter(View<?> view, Controller controller) {
+	protected PreciousViewStarter(View<?,?> view, Controller<?,?> controller) {
 		this.view = view;
 		this.controller = controller;
 	}

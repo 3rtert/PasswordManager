@@ -211,7 +211,12 @@ public class InputListener implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if(e.getKeyChar() == ARROW_CHAR_VALUE && ARROW_CODE_TO_CHAR_CODE_MAP.containsKey(e.getKeyCode()) && !listening) {
-			processActions(ARROW_CODE_TO_CHAR_CODE_MAP.get(e.getKeyCode()));
+			synchronized (actions) {
+				processActions(ARROW_CODE_TO_CHAR_CODE_MAP.get(e.getKeyCode()));
+				if(!actions.isEmpty()) {
+					actions.notifyAll();
+				}
+			}
 		}
 	}
 

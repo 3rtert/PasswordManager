@@ -6,7 +6,7 @@ import com.passm.controller.CreateDatabaseController;
 import com.passm.view.ConsoleView;
 import com.passm.view.console.Console;
 
-public class CreateDatabaseView extends ConsoleView<CreateDatabaseController>{
+public class CreateDatabaseView extends ConsoleView<CreateDatabaseController, CreateDatabaseView>{
 	
 	private final static Logger LOGGER = Logger.getLogger(CreateDatabaseView.class.getName());
 

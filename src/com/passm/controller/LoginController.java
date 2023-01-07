@@ -2,25 +2,17 @@ package com.passm.controller;
 
 import java.util.logging.Logger;
 
+import com.passm.model.config.Configuration;
 import com.passm.model.crypt.DatabaseEncrypterDecrypter;
 import com.passm.view.menu.login.LoginView;
 import com.passm.view.menu.main.MainMenuView;
 
-public class LoginController extends Controller {
+public class LoginController extends ConsoleController<LoginController, LoginView> {
 	
 	private final static Logger LOGGER = Logger.getLogger(LoginController.class.getName());
 	
-	LoginView loginView;
-	
-	public LoginController(LoginView loginView) {
-		super(null);
-		this.loginView = loginView;
-	}
-	
-	@Override
-	public void run() {
-		loginView.setController(this);
-		loginView.init();
+	public LoginController(LoginView loginView, Configuration configuration) {
+		super(null, loginView, configuration);
 	}
 	
 	public boolean isPasswordCorrect(String password) {
@@ -28,6 +20,7 @@ public class LoginController extends Controller {
 			DatabaseEncrypterDecrypter databaseEncrypterDecrypter = new DatabaseEncrypterDecrypter(password.toCharArray());
 			if(databaseEncrypterDecrypter.decrypt()) {
 				databaseEncrypterDecrypter.encrypt();
+				configuration.setDatabasePassword(password);
 				return true;
 			}
 		} catch (Exception e) {
@@ -37,9 +30,14 @@ public class LoginController extends Controller {
 	}
 
 	public void acceptPassword() {
-		loginView.reset();
-		MainMenuView mainMenu = new MainMenuView(loginView.getConsole());
-		MainMenuController mainMenuController = new MainMenuController(mainMenu, this);
+		view.reset();
+		MainMenuView mainMenu = new MainMenuView(view.getConsole());
+		MainMenuController mainMenuController = new MainMenuController(mainMenu, this, configuration);
 		mainMenuController.run();
+	}
+
+	@Override
+	public LoginController getInstance() {
+		return this;
 	}
 }
