@@ -16,6 +16,7 @@ public class ListenerOfActionsThread extends Thread {
 	
 	public ListenerOfActionsThread(Console console) {
 		this.console = console;
+		LOGGER.info("Listener thread created: " + ID);
 	}
 	
 	@Override

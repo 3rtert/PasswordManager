@@ -1,18 +1,18 @@
-package com.passm.view.menu.main;
+package com.passm.view.menu.selector;
 
 import com.passm.view.console.Action;
 import com.passm.view.console.Console;
 
 public class NextOptionSelector implements Action {
 	
-	private final MainMenuView view;
+	private final Selectable selectable;
 	
-	protected NextOptionSelector(MainMenuView view) {
-		this.view = view;
+	public NextOptionSelector(Selectable selectable) {
+		this.selectable = selectable;
 	}
 
 	@Override
 	public void activate(Console console) {
-		view.selectNextOption();
+		selectable.selectNextOption();
 	}
 }

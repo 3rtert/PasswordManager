@@ -14,12 +14,12 @@ public class CreatePasswordController extends ConsoleController<CreatePasswordCo
 	
 	private final static Logger LOGGER = Logger.getLogger(CreatePasswordController.class.getName());
 	
-	public CreatePasswordController(CreatePasswordView createPasswordView, ConsoleController<?,?> previousController, Configuration configuration) {
+	public CreatePasswordController(ConsoleController<?,?> previousController, CreatePasswordView createPasswordView, Configuration configuration) {
 		super(previousController, createPasswordView, configuration);
 	}
 	
 	public void createNewPassword(String login, String password, String name) {
-		LOGGER.info("Startinging creating new password");
+		LOGGER.info("Starting creating new password");
 		try(DatabaseConnection databaseConnection = new DatabaseConnection(configuration)) {
 			Connection connection = databaseConnection.createEncryptedConnection();
 			Password passwordBO = Password.createObject(password, login, name);

@@ -12,22 +12,22 @@ public class PasswordEntity extends Entity {
 	static PasswordTable passwordTable = new PasswordTable();
 	
 	private String password;
+	private String login;
 	private String name;
-	private String description;
 	
-	private PasswordEntity(int id, String password, String name, String description) {
+	private PasswordEntity(int id, String password, String login, String name) {
 		super(id);
 		this.password = password;
+		this.login = login;
 		this.name = name;
-		this.description = description;
 	}
 	
-	public static PasswordEntity createEntity(int id, String password, String name, String description) {
-		return new PasswordEntity(id, password, name, description);
+	public static PasswordEntity createEntity(int id, String password, String login, String name) {
+		return new PasswordEntity(id, password, login, name);
 	}
 	
-	public static PasswordEntity createEntity(String password, String name, String description) {
-		return new PasswordEntity(0, password, name, description);
+	public static PasswordEntity createEntity(String password, String login, String name) {
+		return new PasswordEntity(0, password, login, name);
 	}
 	
 	public static PasswordEntity createEntity(int id) {
@@ -42,8 +42,8 @@ public class PasswordEntity extends Entity {
 	protected Object[] getFields() {
 		return new Object[] {
 			password,
-			name,
-			description
+			login,
+			name
 		};
 	}
 	
@@ -55,20 +55,20 @@ public class PasswordEntity extends Entity {
 		this.password = password;
 	}
 	
+	public String getLogin() {
+		return login;
+	}
+	
+	public void setLogin(String login) {
+		this.login = login;
+	}
+	
 	public String getName() {
 		return name;
 	}
 	
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	public String getDescription() {
-		return description;
-	}
-	
-	public void setDescription(String description) {
-		this.description = description;
 	}
 	
 	protected DatabaseTable getDatabaseTable() {
@@ -79,8 +79,8 @@ public class PasswordEntity extends Entity {
 	public boolean load(Statement statement) {
 		try (ResultSet rs = passwordTable.getObject(statement, getId())) {
 			this.password = rs.getString(2);
-			this.name = rs.getString(3);
-			this.description = rs.getString(4);
+			this.login = rs.getString(3);
+			this.name = rs.getString(4);
 		} catch (SQLException e) {
 			return false;
 		}
@@ -89,7 +89,7 @@ public class PasswordEntity extends Entity {
 
 	@Override
 	public boolean validate() {
-		return name.length() <= 50 
-				&& description.length() <= 100;
+		return login.length() <= 50 
+				&& name.length() <= 100;
 	}
 }

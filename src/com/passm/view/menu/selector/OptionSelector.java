@@ -1,19 +1,19 @@
-package com.passm.view.menu.main;
+package com.passm.view.menu.selector;
 
 import com.passm.view.console.Action;
 import com.passm.view.console.Console;
 
 public class OptionSelector implements Action {
 
-	private final MainMenuView mainMenuView;
+	private final Selectable selectable;
 	
-	public OptionSelector(MainMenuView mainMenuView) {
-		this.mainMenuView = mainMenuView;
+	public OptionSelector(Selectable selectable) {
+		this.selectable = selectable;
 	}
 
 	@Override
 	public void activate(Console console) {
-		mainMenuView.select();
+		selectable.select();
 	}
 
 }
