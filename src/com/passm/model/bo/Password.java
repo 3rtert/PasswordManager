@@ -14,22 +14,22 @@ public class Password extends BusinessObject {
 	private PasswordEntity passwordEntity;
 
 	private String password;
+	private String login;
 	private String name;
-	private String description;
 	
-	private Password(int id, String password, String name, String description) {
+	private Password(int id, String password, String login, String name) {
 		passwordEntity = PasswordEntity.createEntity(id);
 		this.password = password;
+		this.login = login;
 		this.name = name;
-		this.description = description;
 	}
 	
-	public static Password createObject(int id, String password, String name, String description) {
-		return new Password(id, password, name, description);
+	public static Password createObject(int id, String password, String login, String name) {
+		return new Password(id, password, login, name);
 	}
 	
-	public static Password createObject(String password, String name, String description) {
-		return new Password(0, password, name, description);
+	public static Password createObject(String password, String login, String name) {
+		return new Password(0, password, login, name);
 	}
 	
 	public static Password createObject(int id) {
@@ -48,20 +48,20 @@ public class Password extends BusinessObject {
 		this.password = password;
 	}
 	
+	public String getLogin() {
+		return login;
+	}
+	
+	public void setLogin(String login) {
+		this.login = login;
+	}
+	
 	public String getName() {
 		return name;
 	}
 	
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	public String getDescription() {
-		return description;
-	}
-	
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	@Override
@@ -76,8 +76,8 @@ public class Password extends BusinessObject {
 		result = passwordEntity.load(statement);
 		if(result) {
 			setPassword(passwordEntity.getPassword());
+			setLogin(passwordEntity.getLogin());
 			setName(passwordEntity.getName());
-			setDescription(passwordEntity.getDescription());
 		}
 		return result;
 	}
@@ -86,8 +86,8 @@ public class Password extends BusinessObject {
 	public boolean update(Connection connection) throws SQLException {
 		boolean result = true;
 		passwordEntity.setPassword(password);
+		passwordEntity.setLogin(login);
 		passwordEntity.setName(name);
-		passwordEntity.setDescription(description);
 		Statement statement = connection.createStatement();
 		result = passwordEntity.update(statement);
 		return result;

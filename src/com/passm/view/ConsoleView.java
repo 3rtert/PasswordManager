@@ -35,7 +35,9 @@ public abstract class ConsoleView<C extends Controller<C, V>, V extends View<C,V
 		LOGGER.info("Start initialization of " + getName());
 		reset();
 		Action preciousViewStarter = new PreciousViewStarter(this, controller);
+		console.registerAction(InputListener.ARROW_LEFT_CHAR_CODE, preciousViewStarter);
 		console.registerAction(InputListener.ESCAPE, preciousViewStarter);
+		console.registerAction('a', preciousViewStarter);
 	}
 	
 	@Override

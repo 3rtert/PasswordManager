@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.passm.model.config.Configuration;
 import com.passm.view.CreatePasswordView;
+import com.passm.view.PasswordsListView;
 import com.passm.view.menu.main.MainMenuView;
 
 public class MainMenuController extends ConsoleController<MainMenuController, MainMenuView> {
@@ -15,7 +16,8 @@ public class MainMenuController extends ConsoleController<MainMenuController, Ma
 	public MainMenuController(MainMenuView mainMenuView, ConsoleController<?, ?> prevoiusController, Configuration configuration) {
 		super(prevoiusController, mainMenuView, configuration);
 		this.SELECTABLE_OPTINS_TO_CONTROLLERS = new HashMap<>();
-		SELECTABLE_OPTINS_TO_CONTROLLERS.put(SELECTABLE_OPTIONS[1], new CreatePasswordController(new CreatePasswordView(view.getConsole()), this, configuration));
+		SELECTABLE_OPTINS_TO_CONTROLLERS.put(SELECTABLE_OPTIONS[0], new PasswordsListController(this, new PasswordsListView(view.getConsole()), configuration));
+		SELECTABLE_OPTINS_TO_CONTROLLERS.put(SELECTABLE_OPTIONS[1], new CreatePasswordController(this, new CreatePasswordView(view.getConsole()), configuration));
 	}
 	
 	@Override

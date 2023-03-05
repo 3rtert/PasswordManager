@@ -8,8 +8,12 @@ import com.passm.view.ConsoleView;
 import com.passm.view.console.Action;
 import com.passm.view.console.Console;
 import com.passm.view.console.content.InputListener;
+import com.passm.view.menu.selector.NextOptionSelector;
+import com.passm.view.menu.selector.OptionSelector;
+import com.passm.view.menu.selector.PreviousOptionSelector;
+import com.passm.view.menu.selector.Selectable;
 
-public class MainMenuView extends ConsoleView<MainMenuController, MainMenuView> {
+public class MainMenuView extends ConsoleView<MainMenuController, MainMenuView> implements Selectable {
 	
 	private final static Logger LOGGER = Logger.getLogger(MainMenuView.class.getName());
 
@@ -18,7 +22,7 @@ public class MainMenuView extends ConsoleView<MainMenuController, MainMenuView> 
 	
 	private String[] selectableOptions;
 
-	private int position = 1;
+	private int position;
 
 	public MainMenuView(Console console) {
 		super(console);
@@ -37,6 +41,8 @@ public class MainMenuView extends ConsoleView<MainMenuController, MainMenuView> 
 		console.registerAction(InputListener.ARROW_DOWN_CHAR_CODE, nextOptionSelector);
 		Action selectOption = new OptionSelector(this);
 		console.registerAction(InputListener.ENTER, selectOption);
+		console.registerAction(InputListener.ARROW_RIGHT_CHAR_CODE, selectOption);
+		console.registerAction('d', selectOption);
 		LOGGER.info("Initialization finished");
 		update();
 	}
@@ -45,6 +51,7 @@ public class MainMenuView extends ConsoleView<MainMenuController, MainMenuView> 
 		this.selectableOptions = selectableOptions;
 	}
 	
+	@Override
 	public void selectNextOption() {
 		if(position == selectableOptions.length) {
 			position = 1;
@@ -54,6 +61,7 @@ public class MainMenuView extends ConsoleView<MainMenuController, MainMenuView> 
 		update();
 	}
 	
+	@Override
 	public void selectPreviousOption() {
 		if(position == 1) {
 			position = selectableOptions.length;
@@ -63,6 +71,7 @@ public class MainMenuView extends ConsoleView<MainMenuController, MainMenuView> 
 		update();
 	}
 	
+	@Override
 	public void select() {
 		controller.select(position);
 	}

@@ -1,9 +1,14 @@
 package com.passm.view;
 
+import java.util.logging.Logger;
+
 import com.passm.controller.CreatePasswordController;
 import com.passm.view.console.Console;
+import com.passm.view.menu.main.MainMenuView;
 
 public class CreatePasswordView extends ConsoleView<CreatePasswordController, CreatePasswordView> {
+	
+	private final static Logger LOGGER = Logger.getLogger(CreatePasswordView.class.getName());	
 
 	private final static String TITLE = " Create new password ";
 	
@@ -29,9 +34,13 @@ public class CreatePasswordView extends ConsoleView<CreatePasswordController, Cr
 		super.update();
 		Console console = getConsole();
 		console.ln(false);
+		LOGGER.info("Gathering data for new password creation started");
 		String login = receiveLogin(console);
+		LOGGER.info("Login received");
 		String password = receivePassword(console);
+		LOGGER.info("Password received");
 		String name = receiveName(console);
+		LOGGER.info("Name received");
 		controller.createNewPassword(login, password, name);
 	}
 	
