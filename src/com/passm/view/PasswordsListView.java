@@ -131,6 +131,9 @@ public class PasswordsListView extends ConsoleView<PasswordsListController, Pass
 		position = 1;
 		passwordSelected = false;
 		subPosition = 1;
+		if(unselectorThread != null && unselectorThread.isAlive()) {
+			unselectorThread.cancel();
+		}
 	}
 	
 	private void printList() {
