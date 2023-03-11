@@ -34,7 +34,7 @@ public class CreateDatabaseView extends ConsoleView<CreateDatabaseController, Cr
 		boolean arePasswordsTheSame = false;
 		String password = "";
 		while(!isPasswordCorrect || !arePasswordsTheSame) {
-			LOGGER.info("Creating first password");
+			LOGGER.info("Creating main password");
 			console.println(CREATE_PASSWORD_MESSAGE, false);
 			console.ln(false);
 			console.print(MAIN_PASSWORD_MESSAGE);
@@ -46,8 +46,8 @@ public class CreateDatabaseView extends ConsoleView<CreateDatabaseController, Cr
 			isPasswordCorrect = password.length() >= 10;
 			arePasswordsTheSame = password.equals(passwordToConfirm);
 		}
-		LOGGER.info("First password created");
-		controller.createDatabase(password);
+		LOGGER.info("Main password created");
+		controller.prepareDatabase(password);
 	}
 
 	@Override

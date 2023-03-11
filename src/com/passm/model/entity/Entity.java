@@ -2,10 +2,13 @@ package com.passm.model.entity;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Logger;
 
 import com.passm.model.database.tables.DatabaseTable;
 
 public abstract class Entity {
+	
+	private final static Logger LOGGER = Logger.getLogger(Entity.class.getName());
 	
 	private int id;
 	
@@ -23,7 +26,7 @@ public abstract class Entity {
 		try {
 			return getDatabaseTable().exist(statement, getId());
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.warning(e.getMessage());
 			return false;
 		}
 	}
@@ -48,7 +51,7 @@ public abstract class Entity {
 				
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.warning(e.getMessage());
 			return false;
 		}
 		return true;
