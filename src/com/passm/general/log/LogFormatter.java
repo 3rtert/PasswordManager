@@ -14,7 +14,7 @@ public class LogFormatter extends Formatter {
 	private final static String DOT = ".";
 	private final static String DOT_REGEX = "\\.";
 	private final static String DATE_FORMAT_STRING = "hh:mm:ss:SSS";
-	private final static String DATE_FORMAT_STRING_FOR_FILE = "yyyy-mm-dd hh:mm:ss:SSS";
+	private final static String DATE_FORMAT_STRING_FOR_FILE = "yyyy-MM-dd hh:mm:ss:SSS";
 	private final static DateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_STRING);
 	private final static DateFormat DATE_FORMAT_FOR_FILE = new SimpleDateFormat(DATE_FORMAT_STRING_FOR_FILE);
 	
