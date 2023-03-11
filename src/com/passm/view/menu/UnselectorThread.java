@@ -16,6 +16,7 @@ public class UnselectorThread extends Thread {
 	private long waitUntil;
 	private String oldValue;
 	private Selectable selectable;
+	private boolean isCanceled;
 	
 	public UnselectorThread(long waitUntil, String oldValue, Selectable selectable) {
 		this.waitFrom = System.currentTimeMillis();
@@ -23,10 +24,15 @@ public class UnselectorThread extends Thread {
 		this.oldValue = oldValue;
 		this.selectable = selectable;
 		clipboardUpdater = new ClipboardUpdater();
+		isCanceled = false;
 	}
 	
 	public void setWaitUntil(long waitUntil) {
 		this.waitUntil = waitUntil;
+	}
+	
+	public void cancel() {
+		isCanceled = true;
 	}
 	
 	@Override
@@ -40,8 +46,10 @@ public class UnselectorThread extends Thread {
 				LOGGER.warning(e.getMessage());
 			}
 		}
-		clipboardUpdater.clear(oldValue);
-		selectable.select();
-		LOGGER.info("Clipboard cleared after " + (waitUntil - waitFrom) + "in thread: " + ID);
+		if(!isCanceled) {
+			clipboardUpdater.clear(oldValue);
+			selectable.select();
+		}
+		LOGGER.info("Clipboard cleared after " + (waitUntil - waitFrom) + "ms in thread: " + ID);
 	}
 }
