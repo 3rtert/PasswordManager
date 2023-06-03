@@ -35,7 +35,7 @@ public class LogFormatter extends Formatter {
 		sb.append(DOT);
 		sb.append(record.getSourceMethodName());
 		sb.append(MESSAGE_SEPARATOR);
-		sb.append(formatMessage(record));
+		sb.append(formatMessage(record).strip());
 		sb.append(NEW_LINE);
 		return sb.toString();
 	}

@@ -16,7 +16,7 @@ public class PasswordsListController extends ConsoleController<PasswordsListCont
 
 	private final static Logger LOGGER = Logger.getLogger(PasswordsListController.class.getName());
 	
-	List<Password> passwords;
+	private List<Password> passwords;
 	
 	public PasswordsListController(ConsoleController<?, ?> previousController, PasswordsListView passwordsListview,
 			Configuration configuration) {
