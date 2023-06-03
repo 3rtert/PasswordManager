@@ -122,7 +122,6 @@ public class PasswordsListView extends ConsoleView<PasswordsListController, Pass
 			}
 		} else {
 			if(unselectorThread != null && unselectorThread.isAlive()) {
-				new ClipboardUpdater().clear(currentValue);
 				unselectorThread.cancel();
 			}
 		}
