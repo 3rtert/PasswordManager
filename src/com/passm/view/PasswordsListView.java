@@ -98,9 +98,6 @@ public class PasswordsListView extends ConsoleView<PasswordsListController, Pass
 	
 	@Override
 	public void select() {
-		if(!passwordSelected) {
-			
-		}
 		passwordSelected = !passwordSelected;
 		subPosition = DEFAULT_OPTIN;
 		updateClipboard();
@@ -117,10 +114,15 @@ public class PasswordsListView extends ConsoleView<PasswordsListController, Pass
 			}
 			new ClipboardUpdater().update(currentValue);
 			if(unselectorThread != null && unselectorThread.isAlive()) {
-				unselectorThread.setWaitUntil(System.currentTimeMillis() + controller.getClipboardClearingDelay());
+				unselectorThread.extendDelay(System.currentTimeMillis() + controller.getClipboardClearingDelay(), currentValue);
+				
 			} else {
 				unselectorThread = new UnselectorThread(System.currentTimeMillis() + controller.getClipboardClearingDelay(), currentValue, this);
 				unselectorThread.start();
+			}
+		} else {
+			if(unselectorThread != null && unselectorThread.isAlive()) {
+				unselectorThread.cancel();
 			}
 		}
 	}
