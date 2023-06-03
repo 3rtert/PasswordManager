@@ -1,6 +1,7 @@
 package com.passm.view;
 
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
 import com.passm.view.console.Action;
@@ -10,7 +11,7 @@ public class ListenerOfActionsThread extends Thread {
 	
 	private final static Logger LOGGER = Logger.getLogger(ListenerOfActionsThread.class.getName());
 	
-	private double ID = Math.random();
+	private int ID = new Random().nextInt();
 	
 	private final Console console;
 	
@@ -50,7 +51,7 @@ public class ListenerOfActionsThread extends Thread {
 
 	private class PerformerOfActionsThread extends Thread {
 		
-		private double ID = Math.random();
+		private int ID = new Random().nextInt();
 		
 		private Action action;
 		

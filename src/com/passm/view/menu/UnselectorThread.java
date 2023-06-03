@@ -1,5 +1,6 @@
 package com.passm.view.menu;
 
+import java.util.Random;
 import java.util.logging.Logger;
 
 import com.passm.view.ClipboardUpdater;
@@ -10,7 +11,7 @@ public class UnselectorThread extends Thread {
 	private final static Logger LOGGER = Logger.getLogger(UnselectorThread.class.getName());
 	private static ClipboardUpdater clipboardUpdater;
 	
-	private double ID = Math.random();
+	private int ID = new Random().nextInt();
 	
 	private long waitFrom;
 	private long waitUntil;
@@ -27,12 +28,19 @@ public class UnselectorThread extends Thread {
 		isCanceled = false;
 	}
 	
-	public void setWaitUntil(long waitUntil) {
+	public void extendDelay(long waitUntil, String oldValue) {
+		this.oldValue = oldValue;
+		extendDelay(waitUntil);
+		isCanceled = false;
+	}
+	
+	public void extendDelay(long waitUntil) {
 		this.waitUntil = waitUntil;
 	}
 	
 	public void cancel() {
 		isCanceled = true;
+		clipboardUpdater.clear(oldValue);
 	}
 	
 	@Override
@@ -49,7 +57,10 @@ public class UnselectorThread extends Thread {
 		if(!isCanceled) {
 			clipboardUpdater.clear(oldValue);
 			selectable.select();
+			LOGGER.info("Unselected after " + (waitUntil - waitFrom) + "ms in thread: " + ID);
 		}
-		LOGGER.info("Clipboard cleared after " + (waitUntil - waitFrom) + "ms in thread: " + ID);
+		else {
+			LOGGER.info("Canceled after " + (waitUntil - waitFrom) + "ms in thread: " + ID);
+		}
 	}
 }
