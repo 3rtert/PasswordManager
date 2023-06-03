@@ -22,7 +22,7 @@ public class PasswordsListView extends ConsoleView<PasswordsListController, Pass
 	private final static String SUBSELECTION = " * ";
 	private final static int LOGIN_OPTION = 1;
 	private final static int PASSWORD_OPTION = 2;
-	private final static int DEFAULT_OPTIN = LOGIN_OPTION;
+	private final static int DEFAULT_OPTION = LOGIN_OPTION;
 	private final static String LOGIN_LABEL = "Login: ";
 	private final static String PASSWORD_LABEL = "Password: ";
 	private final static String PASSWORD_HIDED_LABEL = "hided";
@@ -99,7 +99,7 @@ public class PasswordsListView extends ConsoleView<PasswordsListController, Pass
 	@Override
 	public void select() {
 		passwordSelected = !passwordSelected;
-		subPosition = DEFAULT_OPTIN;
+		subPosition = DEFAULT_OPTION;
 		updateClipboard();
 		update();
 	}
