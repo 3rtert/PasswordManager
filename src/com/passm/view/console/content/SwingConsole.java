@@ -13,7 +13,7 @@ import com.passm.view.console.Console;
 import com.passm.view.console.window.SwingConsoleFrame;
 
 public class SwingConsole implements Console {
-	
+
 	private final static Logger LOGGER = Logger.getLogger(SwingConsole.class.getName());
 
 	private final static String NEW_LINE = "\n";
@@ -26,35 +26,40 @@ public class SwingConsole implements Console {
 
 	private final SwingConsoleFrame frame;
 	private String consoleText;
-	private StringBuilder consoleBufferedText;
+	private final StringBuilder consoleBufferedText;
 	private boolean underscoreAtTheEnd;
+	private final boolean withScroll;
 	private final InputListener inputListener;
-	
-	private ListenerOfActionsThread listenerOfActionsThread;
+
+	private final ListenerOfActionsThread listenerOfActionsThread;
 
 	private final Function<String, Boolean> LINE_WITH_ENTER_FILLTER = currentLine -> currentLine.length() > 0
 			&& (currentLine.charAt(0) == InputListener.ENTER
-					|| currentLine.charAt(currentLine.length() - 1) == InputListener.ENTER);
+			|| currentLine.charAt(currentLine.length() - 1) == InputListener.ENTER);
 
 	private final Function<String, Boolean> ANY_INPUT_FILLTER = currentLine -> currentLine.length() > 0;
 
 	public static SwingConsole create() {
-		return new SwingConsole(DEFAULT_NAME, false);
+		return new SwingConsole(DEFAULT_NAME, false, false);
 	}
 
 	public static SwingConsole create(String name) {
-		return new SwingConsole(name, false);
+		return new SwingConsole(name, false, false);
 	}
 
 	public static SwingConsole createWithUnderscore(String name) {
-		return new SwingConsole(name, true);
+		return new SwingConsole(name, true, false);
 	}
 
-	private SwingConsole(String name, boolean underscoreAtTheEnd) {
+	public static SwingConsole create(String name, boolean underscoreAtTheEnd, boolean withScroll) {
+		return new SwingConsole(name, underscoreAtTheEnd, withScroll);
+	}
+
+	private SwingConsole(String name, boolean underscoreAtTheEnd, boolean withScroll) {
 		LOGGER.info("Initializing of SwingConsole");
 		consoleBufferedText = new StringBuilder();
 		inputListener = new InputListener(consoleBufferedText, this);
-		frame = new SwingConsoleFrame(name, inputListener);
+		frame = SwingConsoleFrame.create(name, inputListener, withScroll);
 		frame.setResizable(false);
 		frame.setVisible(true);
 		setFontSize(DEFAULT_FONT_SIZE);
@@ -64,8 +69,9 @@ public class SwingConsole implements Console {
 		clear();
 		clearActions();
 		setUnderscoreAtTheEnd(underscoreAtTheEnd);
+		this.withScroll = withScroll;
 		this.listenerOfActionsThread = new ListenerOfActionsThread(this);
-		listenerOfActionsThread.start(); 
+		listenerOfActionsThread.start();
 		LOGGER.info("SwingConsole inizialized");
 	}
 
@@ -90,10 +96,10 @@ public class SwingConsole implements Console {
 		if (underscoreAtTheEnd) {
 			textToShow += UNDERSCORE;
 		}
-		frame.setText(textToShow);
+		frame.setText(textToShow, withScroll);
 		LOGGER.info("Console refreshed");
 	}
-	
+
 	@Override
 	public void print(String text) {
 		print(text, false, true);
@@ -129,12 +135,12 @@ public class SwingConsole implements Console {
 	public void ln() {
 		ln(true);
 	}
-	
+
 	@Override
 	public void ln(boolean withRefresh) {
 		print(EMPTY, true, withRefresh);
 	}
-	
+
 	@Override
 	public void clear(boolean withRefresh) {
 		consoleText = EMPTY;
@@ -237,7 +243,7 @@ public class SwingConsole implements Console {
 	public List<Action> getActions() {
 		return inputListener.getActions();
 	}
-	
+
 	@Override
 	public int getHeight() {
 		return frame.getHeight();
@@ -267,17 +273,17 @@ public class SwingConsole implements Console {
 	public void setSizeInCharacters(int width, int height) {
 		frame.setSizeInCharacters(width, height);
 	}
-	
+
 	@Override
 	public void setLocation(int x, int y) {
 		frame.setLocation(x, y);
 	}
-	
+
 	@Override
 	public void setFontSize(int fontSize) {
 		frame.setFontSize(fontSize);
 	}
-	
+
 	@Override
 	public void stop() {
 		LOGGER.info("Stopping console...");
@@ -286,10 +292,11 @@ public class SwingConsole implements Console {
 		}
 		System.exit(0);
 	}
-	
+
 	@Override
 	public void diableListening() {
 		inputListener.diableListening();
 		inputListener.clearBuffer();
 	}
 }
+
