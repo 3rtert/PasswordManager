@@ -100,7 +100,9 @@ public class MainMenuView extends ConsoleView<MainMenuController, MainMenuView> 
 	}
 	
 	private int getAverageLengthOfSelectableOptions() {
-		return (int) Arrays.asList(selectableOptions).stream().map(option -> option.length()).mapToInt(Integer::intValue).average().getAsDouble();
+		if (selectableOptions.length == 0)
+			return 0;
+		return (int) Arrays.stream(selectableOptions).map(String::length).mapToInt(Integer::intValue).average().getAsDouble();
 	}
 
 	@Override

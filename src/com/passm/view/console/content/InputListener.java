@@ -1,20 +1,18 @@
 package com.passm.view.console.content;
 
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import com.passm.view.console.Action;
 
-public class InputListener implements KeyListener {
-	
+public class InputListener implements KeyListener, AdjustmentListener {
+
 	private final static Logger LOGGER = Logger.getLogger(InputListener.class.getName());
 
 	private final static char BACKSPACE = 8;
@@ -31,21 +29,21 @@ public class InputListener implements KeyListener {
 	public final static char ARROW_DOWN_CHAR_CODE = 2;
 	public final static char ARROW_LEFT_CHAR_CODE = 3;
 	public final static char ARROW_RIGHT_CHAR_CODE = 4;
-	
-	private final Map<Integer, Character> ARROW_CODE_TO_CHAR_CODE_MAP; 
+
+	private final Map<Integer, Character> ARROW_CODE_TO_CHAR_CODE_MAP;
 
 	private boolean listening;
 	private boolean hideInput;
-	private StringBuilder line;
-	private StringBuilder consoleBufferedText;
-	private SwingConsole console;
+	private final StringBuilder line;
+	private final StringBuilder consoleBufferedText;
+	private final SwingConsole console;
 	Function<String, Boolean> conditionToReturnInput;
 
 	private Map<Character, List<Action>> registeredActions;
 	private Map<Character, Boolean> activeInputs;
 	private boolean inputCaseSensitive;
-	
-	private List<Action> actions;
+
+	private final List<Action> actions;
 
 	protected InputListener(StringBuilder consoleBufferedText, SwingConsole console) {
 		this.console = console;
@@ -77,7 +75,7 @@ public class InputListener implements KeyListener {
 	protected StringBuilder getLineObject() {
 		return line;
 	}
-	
+
 	protected List<Action> getActions(){
 		return actions;
 	}
@@ -127,7 +125,7 @@ public class InputListener implements KeyListener {
 		actions.addAll(activeInputs.keySet().stream()
 				.filter(activator -> shouldInputTrigger(activator, input) && activeInputs.get(activator))
 				.map(activator -> registeredActions.get(activator))
-				.flatMap(list -> list.stream())
+				.flatMap(Collection::stream)
 				.collect(Collectors.toList()));
 	}
 
@@ -203,9 +201,9 @@ public class InputListener implements KeyListener {
 		activeInputs.remove(activator);
 		LOGGER.info("Action cleared: " + activator);
 	}
-	
+
 	protected void clearBuffer() {
-		line = new StringBuilder();
+		line.setLength(0);
 	}
 
 	@Override
@@ -222,6 +220,11 @@ public class InputListener implements KeyListener {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void adjustmentValueChanged(AdjustmentEvent e) {
+
 	}
 
 }
