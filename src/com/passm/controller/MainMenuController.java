@@ -13,15 +13,15 @@ import com.passm.view.menu.main.MainMenuView;
 public class MainMenuController extends ConsoleController<MainMenuController, MainMenuView> {
 	
 	private final static String[] SELECTABLE_OPTIONS = { "List of passwords", "Add new password", "Change password", "Remove password", "Update main password", "Settings" };
-	private final Map<String, ConsoleController<?, ?>> SELECTABLE_OPTINS_TO_CONTROLLERS;
+	private final Map<String, ConsoleController<?, ?>> SELECTABLE_OPTIONS_TO_CONTROLLERS;
 	
-	public MainMenuController(MainMenuView mainMenuView, ConsoleController<?, ?> prevoiusController, Configuration configuration) {
-		super(prevoiusController, mainMenuView, configuration);
-		this.SELECTABLE_OPTINS_TO_CONTROLLERS = new HashMap<>();
-		SELECTABLE_OPTINS_TO_CONTROLLERS.put(SELECTABLE_OPTIONS[0], new PasswordsListController(this, new PasswordsListView(view.getConsole()), configuration));
-		SELECTABLE_OPTINS_TO_CONTROLLERS.put(SELECTABLE_OPTIONS[1], new CreatePasswordController(this, new CreatePasswordView(view.getConsole()), configuration));
-		SELECTABLE_OPTINS_TO_CONTROLLERS.put(SELECTABLE_OPTIONS[3], new RemovePasswordController(this, new RemovePasswordView(view.getConsole()), configuration));
-		SELECTABLE_OPTINS_TO_CONTROLLERS.put(SELECTABLE_OPTIONS[4], new CreateDatabaseController(this, new CreateDatabaseView(view.getConsole()), configuration, true));
+	public MainMenuController(MainMenuView mainMenuView, ConsoleController<?, ?> previousController, Configuration configuration) {
+		super(previousController, mainMenuView, configuration);
+		this.SELECTABLE_OPTIONS_TO_CONTROLLERS = new HashMap<>();
+		SELECTABLE_OPTIONS_TO_CONTROLLERS.put(SELECTABLE_OPTIONS[0], new PasswordsListController(this, new PasswordsListView(view.getConsole()), configuration));
+		SELECTABLE_OPTIONS_TO_CONTROLLERS.put(SELECTABLE_OPTIONS[1], new CreatePasswordController(this, new CreatePasswordView(view.getConsole()), configuration));
+		SELECTABLE_OPTIONS_TO_CONTROLLERS.put(SELECTABLE_OPTIONS[3], new RemovePasswordController(this, new RemovePasswordView(view.getConsole()), configuration));
+		SELECTABLE_OPTIONS_TO_CONTROLLERS.put(SELECTABLE_OPTIONS[4], new CreateDatabaseController(this, new CreateDatabaseView(view.getConsole()), configuration, true));
 	}
 	
 	@Override
@@ -31,7 +31,7 @@ public class MainMenuController extends ConsoleController<MainMenuController, Ma
 	}
 	
 	public void select(int position) {
-		ConsoleController<?, ?> nextController = SELECTABLE_OPTINS_TO_CONTROLLERS.get(SELECTABLE_OPTIONS[position-1]);
+		ConsoleController<?, ?> nextController = SELECTABLE_OPTIONS_TO_CONTROLLERS.get(SELECTABLE_OPTIONS[position-1]);
 		if(nextController != null) {
 			view.reset();
 			nextController.run();

@@ -39,14 +39,6 @@ public class UserTable extends DatabaseTable {
 		return ID;
 	}
 
-	public static String getName() {
-		return NAME;
-	}
-
-	public static String getMainPassword() {
-		return MAIN_PASSWORD;
-	}
-
 	@Override
 	protected String getCreateSql() {
 		return createSql;

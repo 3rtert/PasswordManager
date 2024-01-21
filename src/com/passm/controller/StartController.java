@@ -21,7 +21,7 @@ public class StartController extends ConsoleController<StartController, StartVie
 		Console console = SwingConsole.create("Password Manager");
 		LoginView loginView = new LoginView(console);
 		LoginController loginController = new LoginController(loginView, configuration);
-		if(!DatabaseEncrypterDecrypter.isDatabaseEncypted()) {
+		if(!DatabaseEncrypterDecrypter.isDatabaseEncrypted()) {
 			CreateDatabaseView createDatabaseView = new CreateDatabaseView(console);
 			CreateDatabaseController createDatabaseController = new CreateDatabaseController(loginController, createDatabaseView, configuration, false);
 			createDatabaseController.run();

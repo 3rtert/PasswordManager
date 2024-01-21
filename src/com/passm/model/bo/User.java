@@ -14,7 +14,7 @@ import com.passm.model.entity.UserEntity;
 
 public class User extends BusinessObject {
 	
-	private UserEntity userEntity;
+	private final UserEntity userEntity;
 
 	private String name;
 	private List<Password> passwords;
@@ -82,10 +82,10 @@ public class User extends BusinessObject {
 
 	@Override
 	public boolean load(Connection connection) throws SQLException {
-		boolean result = true;
+		boolean result;
 		Statement statement = connection.createStatement();
-		result = result && userEntity.load(statement);
-		List<PasswordAssignment> passwordAssignments = PasswordAssignment.getAssignemntsByUserId(statement, userEntity.getId());
+		result = userEntity.load(statement);
+		List<PasswordAssignment> passwordAssignments = PasswordAssignment.getAssignmentsByUserId(statement, userEntity.getId());
 		List<Password> passwords = new ArrayList<>();
 		for (PasswordAssignment passwordAssignment : passwordAssignments) {
 			int passwordId = passwordAssignment.getPasswordId();
@@ -103,17 +103,17 @@ public class User extends BusinessObject {
 
 	@Override
 	public boolean update(Connection connection) throws SQLException {
-		boolean result = true;
+		boolean result;
 		Statement statement = connection.createStatement();
 		
 		userEntity.setName(name);
 		userEntity.setMainPassword(mainPassword.getId());
-		result = result && userEntity.update(statement);
+		result = userEntity.update(statement);
 		
-		List<PasswordAssignment> passwordAssignmentsInBase = PasswordAssignment.getAssignemntsByUserId(statement, userEntity.getId());
+		List<PasswordAssignment> passwordAssignmentsInBase = PasswordAssignment.getAssignmentsByUserId(statement, userEntity.getId());
 		
 		List<Integer> passwordIdsInBase = passwordAssignmentsInBase.stream()
-				.map(passwordAssignment -> passwordAssignment.getPasswordId())
+				.map(PasswordAssignment::getPasswordId)
 				.collect(Collectors.toList());
 		
 		for(Password password : getPasswords()) {
@@ -124,7 +124,7 @@ public class User extends BusinessObject {
 		}
 		
 		Set<Integer> passwordIdsInBO = passwords.stream()
-				.map(password -> password.getId())
+				.map(BusinessObject::getId)
 				.collect(Collectors.toSet());
 		
 		for (int passwordId : passwordIdsInBase) {
@@ -141,7 +141,7 @@ public class User extends BusinessObject {
 	public boolean delete(Connection connection) throws SQLException {
 		boolean result = true;
 		Statement statement = connection.createStatement();
-		List<PasswordAssignment> passwordAssignments = PasswordAssignment.getAssignemntsByUserId(statement, userEntity.getId());
+		List<PasswordAssignment> passwordAssignments = PasswordAssignment.getAssignmentsByUserId(statement, userEntity.getId());
 		for (PasswordAssignment passwordAssignment : passwordAssignments) {
 			int passwordId = passwordAssignment.getPasswordId();
 			Password password = Password.createObject(passwordId);

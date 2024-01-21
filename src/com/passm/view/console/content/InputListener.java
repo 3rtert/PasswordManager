@@ -47,7 +47,7 @@ public class InputListener implements KeyListener, AdjustmentListener {
 
 	protected InputListener(StringBuilder consoleBufferedText, SwingConsole console) {
 		this.console = console;
-		diableListening();
+		disableListening();
 		line = new StringBuilder();
 		actions = new LinkedList<>();
 		this.consoleBufferedText = consoleBufferedText;
@@ -57,7 +57,7 @@ public class InputListener implements KeyListener, AdjustmentListener {
 		ARROW_CODE_TO_CHAR_CODE_MAP.put(ARROW_DOWN_CODE, ARROW_DOWN_CHAR_CODE);
 		ARROW_CODE_TO_CHAR_CODE_MAP.put(ARROW_LEFT_CODE, ARROW_LEFT_CHAR_CODE);
 		ARROW_CODE_TO_CHAR_CODE_MAP.put(ARROW_RIGHT_CODE, ARROW_RIGHT_CHAR_CODE);
-		LOGGER.info("InputListener inicialized");
+		LOGGER.info("InputListener initialized");
 	}
 
 	protected void enableListening(Function<String, Boolean> conditionToReturnInput, boolean hide) {
@@ -67,7 +67,7 @@ public class InputListener implements KeyListener, AdjustmentListener {
 		LOGGER.info("Listening enabled");
 	}
 
-	protected void diableListening() {
+	protected void disableListening() {
 		listening = false;
 		LOGGER.info("Listening disabled");
 	}
@@ -78,10 +78,6 @@ public class InputListener implements KeyListener, AdjustmentListener {
 
 	protected List<Action> getActions(){
 		return actions;
-	}
-
-	protected String getLine() {
-		return line.toString();
 	}
 
 	@Override
@@ -107,7 +103,7 @@ public class InputListener implements KeyListener, AdjustmentListener {
 	}
 
 	private boolean processInput(char input) {
-		LOGGER.info("Procesing input");
+		LOGGER.info("Processing input");
 		boolean inputProcessed = false;
 		if (input == BACKSPACE) {
 			removeLastCharacter();
@@ -121,7 +117,7 @@ public class InputListener implements KeyListener, AdjustmentListener {
 	}
 
 	private void processActions(char input) {
-		LOGGER.info("Procesing action: " + input);
+		LOGGER.info("Processing action: " + input);
 		actions.addAll(activeInputs.keySet().stream()
 				.filter(activator -> shouldInputTrigger(activator, input) && activeInputs.get(activator))
 				.map(activator -> registeredActions.get(activator))

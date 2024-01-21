@@ -28,7 +28,7 @@ abstract public class ConsoleController<C extends Controller<C, V>, V extends Vi
 	@Override
 	public void startPreviousView(Console console, View<?,?> view) {
 		if(previousController == null) {
-			LOGGER.info("Application stoped by ESCAPE");
+			LOGGER.info("Application stopped by ESCAPE");
 			console.stop();
 		}
 		LOGGER.info("Go to previous view by ESCAPE");

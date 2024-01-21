@@ -11,7 +11,7 @@ public class ConfirmationController extends ConsoleController<ConfirmationContro
 	
 	private final static Logger LOGGER = Logger.getLogger(ConfirmationController.class.getName());
 	
-	private Recipient recipient;
+	private final Recipient recipient;
 	
 	public ConfirmationController(ConsoleController<?, ?> previousController, ConfirmationView confirmationView,
 			Configuration configuration, Recipient recipient) {
@@ -24,7 +24,7 @@ public class ConfirmationController extends ConsoleController<ConfirmationContro
 		return this;
 	}
 	
-	public void returnResponce(boolean confirmed) {
+	public void returnResponse(boolean confirmed) {
 		LOGGER.info("Confirmation: " + confirmed);
 		recipient.receive(confirmed);
 	}

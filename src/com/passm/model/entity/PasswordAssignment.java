@@ -83,16 +83,16 @@ public class PasswordAssignment extends Entity {
 		return true;
 	}
 	
-	public static List<PasswordAssignment> getAssignemntsByPasswordId(Statement statement, int id) {
-		return getAssignemntsByForeignId(statement, id, PasswordAssignmentTable.getPasswordId());
+	public static List<PasswordAssignment> getAssignmentsByPasswordId(Statement statement, int id) {
+		return getAssignmentsByForeignId(statement, id, PasswordAssignmentTable.getPasswordId());
 	}
 	
-	public static List<PasswordAssignment> getAssignemntsByUserId(Statement statement, int id) {
-		return getAssignemntsByForeignId(statement, id, PasswordAssignmentTable.getUserId());
+	public static List<PasswordAssignment> getAssignmentsByUserId(Statement statement, int id) {
+		return getAssignmentsByForeignId(statement, id, PasswordAssignmentTable.getUserId());
 	}
 	
-	private static List<PasswordAssignment> getAssignemntsByForeignId(Statement statement, int id, String foreignIdName) {
-		String sql = "SELECT * FROM " + passwordAssignmentTable.getTable_name() + " o WHERE " + foreignIdName + " = " + Integer.toString(id);
+	private static List<PasswordAssignment> getAssignmentsByForeignId(Statement statement, int id, String foreignIdName) {
+		String sql = "SELECT * FROM " + passwordAssignmentTable.getTable_name() + " o WHERE " + foreignIdName + " = " + id;
 		List<PasswordAssignment> passwordAssignments = new ArrayList<>();
 		try (ResultSet rs = statement.executeQuery(sql)) {
 			while(rs.next()) {

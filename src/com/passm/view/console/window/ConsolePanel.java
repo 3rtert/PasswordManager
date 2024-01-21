@@ -42,7 +42,7 @@ public class ConsolePanel extends JPanel {
 		whiteStyle = textPane.addStyle("", null);
 		StyleConstants.setForeground(whiteStyle, Color.WHITE);
 		add(textPane);
-		LOGGER.info("ConsolePanel inizialized");
+		LOGGER.info("ConsolePanel initialized");
 	}
 
 	protected void setText(String text, boolean scrollDown) {

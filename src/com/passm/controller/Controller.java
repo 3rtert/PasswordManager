@@ -6,9 +6,9 @@ import com.passm.view.console.Console;
 
 public interface Controller<C extends Controller<C, V>, V extends View<C, V>> {
 	
-	public void startPreviousView(Console console, View<?, ?> view);
-	public void setView(V view);
-	public void run();
-	public C getInstance();
-	public void setConfig(Configuration configuration);	
+	void startPreviousView(Console console, View<?, ?> view);
+	void setView(V view);
+	void run();
+	C getInstance();
+	void setConfig(Configuration configuration);
 }

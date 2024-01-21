@@ -159,7 +159,9 @@ public class PasswordsListView extends ConsoleView<PasswordsListController, Pass
 	}
 	
 	private int getAverageLengthOfPasswordNames() {
-		return (int) passwordNames.stream().map(password -> password.length()).mapToInt(Integer::intValue).average().getAsDouble();
+		if(passwordNames.isEmpty())
+			return 0;
+		return (int) passwordNames.stream().map(String::length).mapToInt(Integer::intValue).average().getAsDouble();
 	}
 	
 	private void printSubList(Console console, int leftMarginLength, int numberOfPassword) {

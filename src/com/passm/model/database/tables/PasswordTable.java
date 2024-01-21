@@ -38,21 +38,12 @@ public class PasswordTable extends DatabaseTable {
 		return TABLE_NAME;
 	}
 
-
 	public static String getId() {
 		return ID;
 	}
 	
 	public static String getName() {
 		return NAME;
-	}
-
-	public static String getDescription() {
-		return DESCRIPTION;
-	}
-
-	public static String getPasswordHash() {
-		return PASSWORD_HASH;
 	}
 
 	@Override

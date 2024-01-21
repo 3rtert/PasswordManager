@@ -46,7 +46,7 @@ public class RemovePasswordController extends ConsoleController<RemovePasswordCo
 	}
 	
 	public List<String> getPasswordsNameList() {
-		return passwords.stream().map(password -> password.getName()).collect(Collectors.toList());
+		return passwords.stream().map(Password::getName).collect(Collectors.toList());
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class RemovePasswordController extends ConsoleController<RemovePasswordCo
 	
 	private boolean removePassword(int index) {
 		LOGGER.info("Starting removing password: '" + passwords.get(index).getName() + "' id: " + passwords.get(index).getId());
-		boolean result = false;
+		boolean result;
 		try(DatabaseConnection databaseConnection = new DatabaseConnection(configuration)) {
 			Connection connection = databaseConnection.createEncryptedConnection();
 			Password passwordBO = Password.createObject(passwords.get(index).getId());

@@ -41,7 +41,7 @@ public class PasswordsListController extends ConsoleController<PasswordsListCont
 	}
 	
 	public List<String> getPasswordsNameList() {
-		return passwords.stream().map(password -> password.getName()).collect(Collectors.toList());
+		return passwords.stream().map(Password::getName).collect(Collectors.toList());
 	}
 	
 	public String getPassword(int numberOfPassword) {
