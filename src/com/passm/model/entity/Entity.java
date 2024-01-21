@@ -11,11 +11,7 @@ public abstract class Entity {
 	private final static Logger LOGGER = Logger.getLogger(Entity.class.getName());
 	
 	private int id;
-	
-	public Entity() {
-		setId(0);
-	}
-	
+
 	public Entity(int id) {
 		setId(id);
 	}

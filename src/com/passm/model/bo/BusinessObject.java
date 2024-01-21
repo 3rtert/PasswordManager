@@ -15,7 +15,7 @@ public abstract class BusinessObject {
 	abstract protected Entity getEntity();
 	
 	public boolean load() {
-		boolean result = false;
+		boolean result;
 		try(DatabaseConnection databaseConnection = new DatabaseConnection()) {
 			Connection connection = databaseConnection.createConnection();
 			result = load(connection);
@@ -29,7 +29,7 @@ public abstract class BusinessObject {
 	abstract public boolean load(Connection connection) throws SQLException;
 	
 	public boolean update() {
-		boolean result = false;
+		boolean result;
 		try(DatabaseConnection databaseConnection = new DatabaseConnection()) {
 			Connection connection = databaseConnection.createConnection();
 			result = update(connection);
@@ -44,7 +44,7 @@ public abstract class BusinessObject {
 	abstract public boolean update(Connection connection) throws SQLException;
 	
 	public boolean delete() {
-		boolean result = false;
+		boolean result;
 		try(DatabaseConnection databaseConnection = new DatabaseConnection()) {
 			Connection connection = databaseConnection.createConnection();
 			result = delete(connection);
@@ -59,7 +59,7 @@ public abstract class BusinessObject {
 	abstract public boolean delete(Connection connection) throws SQLException;
 	
 	public boolean exist() throws SQLException {
-		boolean result = false;
+		boolean result;
 		try(DatabaseConnection databaseConnection = new DatabaseConnection()) {
 			Connection connection = databaseConnection.createConnection();
 			Statement statement = connection.createStatement();
@@ -69,7 +69,7 @@ public abstract class BusinessObject {
 	}
 	
 	public boolean exist(Connection connection) {
-		boolean result = false;
+		boolean result;
 		try {
 			Statement statement = connection.createStatement();
 			result = getEntity().exist(statement);

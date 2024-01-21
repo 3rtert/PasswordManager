@@ -55,11 +55,7 @@ public class RemovePasswordView extends ConsoleView<RemovePasswordController, Re
 		super.update();
 		printList();
 	}
-	
-	public int getSelectedPasswordIndex() {
-		return position-1;
-	}
-	
+
 	private void printList() {
 		Console console = getConsole();
 		int leftMarginLength = getLeftMarginLength() - getAverageLengthOfPasswordNames() / 2 + getTitle().length() / 2;
@@ -78,7 +74,9 @@ public class RemovePasswordView extends ConsoleView<RemovePasswordController, Re
 	}
 
 	private int getAverageLengthOfPasswordNames() {
-		return (int) passwordNames.stream().map(password -> password.length()).mapToInt(Integer::intValue).average().getAsDouble();
+		if(passwordNames.isEmpty())
+			return 0;
+		return (int) passwordNames.stream().map(String::length).mapToInt(Integer::intValue).average().getAsDouble();
 	}
 	
 	@Override
@@ -114,7 +112,7 @@ public class RemovePasswordView extends ConsoleView<RemovePasswordController, Re
 	@Override
 	public void select() {
 		int passwordIndex = position-1;
-		LOGGER.info("Id of password seleted to removal: " + passwordIndex);
+		LOGGER.info("Id of password selected to removal: " + passwordIndex);
 		controller.askConfirmation(passwordNames.get(passwordIndex), passwordIndex);
 	}
 

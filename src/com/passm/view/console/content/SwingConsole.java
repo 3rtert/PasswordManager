@@ -33,11 +33,11 @@ public class SwingConsole implements Console {
 
 	private final ListenerOfActionsThread listenerOfActionsThread;
 
-	private final Function<String, Boolean> LINE_WITH_ENTER_FILLTER = currentLine -> currentLine.length() > 0
+	private final Function<String, Boolean> LINE_WITH_ENTER_FILTER = currentLine -> currentLine.length() > 0
 			&& (currentLine.charAt(0) == InputListener.ENTER
 			|| currentLine.charAt(currentLine.length() - 1) == InputListener.ENTER);
 
-	private final Function<String, Boolean> ANY_INPUT_FILLTER = currentLine -> currentLine.length() > 0;
+	private final Function<String, Boolean> ANY_INPUT_FILTER = currentLine -> currentLine.length() > 0;
 
 	public static SwingConsole create() {
 		return new SwingConsole(DEFAULT_NAME, false, false);
@@ -72,7 +72,7 @@ public class SwingConsole implements Console {
 		this.withScroll = withScroll;
 		this.listenerOfActionsThread = new ListenerOfActionsThread(this);
 		listenerOfActionsThread.start();
-		LOGGER.info("SwingConsole inizialized");
+		LOGGER.info("SwingConsole initialized");
 	}
 
 	public void setUnderscoreAtTheEnd(boolean underscoreAtTheEnd) {
@@ -166,10 +166,10 @@ public class SwingConsole implements Console {
 		String result = null;
 		try {
 			StringBuilder line = inputListener.getLineObject();
-			synchronized (line) {
-				inputListener.enableListening(LINE_WITH_ENTER_FILLTER, hide);
+			synchronized (inputListener.getLineObject()) {
+				inputListener.enableListening(LINE_WITH_ENTER_FILTER, hide);
 				line.wait();
-				inputListener.diableListening();
+				inputListener.disableListening();
 				line.deleteCharAt(line.length() - 1);
 				result = line.toString();
 				line.setLength(0);
@@ -187,10 +187,10 @@ public class SwingConsole implements Console {
 	public char read() {
 		try {
 			StringBuilder line = inputListener.getLineObject();
-			synchronized (line) {
-				inputListener.enableListening(ANY_INPUT_FILLTER, true);
+			synchronized (inputListener.getLineObject()) {
+				inputListener.enableListening(ANY_INPUT_FILTER, true);
 				line.wait();
-				inputListener.diableListening();
+				inputListener.disableListening();
 				return line.toString().charAt(0);
 			}
 		} catch (Exception e) {
@@ -295,7 +295,7 @@ public class SwingConsole implements Console {
 
 	@Override
 	public void diableListening() {
-		inputListener.diableListening();
+		inputListener.disableListening();
 		inputListener.clearBuffer();
 	}
 }

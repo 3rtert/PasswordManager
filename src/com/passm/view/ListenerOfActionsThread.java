@@ -11,7 +11,7 @@ public class ListenerOfActionsThread extends Thread {
 	
 	private final static Logger LOGGER = Logger.getLogger(ListenerOfActionsThread.class.getName());
 	
-	private int ID = new Random().nextInt();
+	private final int ID = new Random().nextInt();
 	
 	private final Console console;
 	
@@ -27,7 +27,7 @@ public class ListenerOfActionsThread extends Thread {
 		List<Action> actions = console.getActions();
 		while(isRunning) {
 			try {
-				synchronized (actions) {
+				synchronized (console.getActions()) {
 					actions.wait();
 					LOGGER.info("Action detected: " + ID);
 					if(!actions.isEmpty()) {
@@ -51,9 +51,9 @@ public class ListenerOfActionsThread extends Thread {
 
 	private class PerformerOfActionsThread extends Thread {
 		
-		private int ID = new Random().nextInt();
+		private final int ID = new Random().nextInt();
 		
-		private Action action;
+		private final Action action;
 		
 		private PerformerOfActionsThread(Action action) {
 			this.action = action;

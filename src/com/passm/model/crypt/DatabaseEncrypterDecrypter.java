@@ -60,7 +60,7 @@ public class DatabaseEncrypterDecrypter {
 		}
 	}
 	
-	public static boolean isDatabaseEncypted() {
+	public static boolean isDatabaseEncrypted() {
 		return new File(ENCRYPTED_DATABASE_FILE).exists();
 	}
 	
@@ -71,7 +71,7 @@ public class DatabaseEncrypterDecrypter {
 	public boolean decrypt() {
 		return decrypt(ENCRYPTED_DATABASE_FILE, DATABASE_FILE);
 	}
-	
+
 	private boolean encrypt(String inputFileName, String outputFileName) {
 		LOGGER.info("Start encrypting file " + inputFileName + " to file " + outputFileName);
 		try {

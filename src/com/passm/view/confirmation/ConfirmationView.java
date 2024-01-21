@@ -20,8 +20,8 @@ public class ConfirmationView extends ConsoleView<ConfirmationController, Confir
 	private final static String YES_LABEL = "[Yes]";
 	private final static String NO_LABEL = "[No]";
 	
-	private String message;
-	private boolean optionPossitiveSelected;
+	private final String message;
+	private boolean optionPositiveSelected;
 	
 	public ConfirmationView(Console console, String message) {
 		super(console);
@@ -55,7 +55,7 @@ public class ConfirmationView extends ConsoleView<ConfirmationController, Confir
 	@Override
 	public void reset() {
 		super.reset();
-		optionPossitiveSelected = true;
+		optionPositiveSelected = true;
 	}
 	
 	private void printOptions() {
@@ -65,7 +65,7 @@ public class ConfirmationView extends ConsoleView<ConfirmationController, Confir
 		String marginWithSelection = " ".repeat(leftMarginLength - SELECTION.length()) + SELECTION;
 		console.ln(false);
 		console.ln(false);
-		if(optionPossitiveSelected) {
+		if(optionPositiveSelected) {
 			console.println(marginWithSelection + YES_LABEL, false);
 			console.println(margin + NO_LABEL, false);
 		} else {
@@ -87,19 +87,19 @@ public class ConfirmationView extends ConsoleView<ConfirmationController, Confir
 
 	@Override
 	public void selectNextOption() {
-		optionPossitiveSelected = !optionPossitiveSelected;
+		optionPositiveSelected = !optionPositiveSelected;
 		update();
 	}
 
 	@Override
 	public void selectPreviousOption() {
-		optionPossitiveSelected = !optionPossitiveSelected;
+		optionPositiveSelected = !optionPositiveSelected;
 		update();
 	}
 
 	@Override
 	public void select() {
-		controller.returnResponce(optionPossitiveSelected);
+		controller.returnResponse(optionPositiveSelected);
 	}
 
 }

@@ -41,7 +41,7 @@ public class LogFormatter extends Formatter {
 	}
 	
 	private String getClassName(String fullName) {
-		String[] splitedName = fullName.split(DOT_REGEX);
-		return splitedName[splitedName.length-1];
+		String[] splitName = fullName.split(DOT_REGEX);
+		return splitName[splitName.length-1];
 	}
 }

@@ -11,7 +11,7 @@ import com.passm.model.entity.PasswordEntity;
 
 public class Password extends BusinessObject {
 	
-	private PasswordEntity passwordEntity;
+	private final PasswordEntity passwordEntity;
 
 	private String password;
 	private String login;
@@ -71,7 +71,7 @@ public class Password extends BusinessObject {
 
 	@Override
 	public boolean load(Connection connection) throws SQLException {
-		boolean result = true;
+		boolean result;
 		Statement statement = connection.createStatement();
 		result = passwordEntity.load(statement);
 		if(result) {
@@ -84,7 +84,7 @@ public class Password extends BusinessObject {
 
 	@Override
 	public boolean update(Connection connection) throws SQLException {
-		boolean result = true;
+		boolean result;
 		passwordEntity.setPassword(password);
 		passwordEntity.setLogin(login);
 		passwordEntity.setName(name);
@@ -98,7 +98,7 @@ public class Password extends BusinessObject {
 		boolean result = true;
 		Statement statement = connection.createStatement();
 		if(passwordEntity.exist(statement)) {
-			List<PasswordAssignment> passwordAssignments = PasswordAssignment.getAssignemntsByPasswordId(statement, passwordEntity.getId());
+			List<PasswordAssignment> passwordAssignments = PasswordAssignment.getAssignmentsByPasswordId(statement, passwordEntity.getId());
 			for (PasswordAssignment passwordAssignment : passwordAssignments) {
 				result = result && passwordAssignment.delete(statement);
 			}

@@ -18,7 +18,7 @@ public class CreateDatabaseController extends ConsoleController<CreateDatabaseCo
 	
 	private final static String MAIN_ACCOUNT_DEFAULT_NAME = "Admin";
 	
-	private boolean databaseAlreadyExist;
+	private final boolean databaseAlreadyExist;
 	
 	public CreateDatabaseController(ConsoleController<?,?> previousController, CreateDatabaseView createDatabaseView, Configuration configuration, boolean databaseAlreadyExist) {
 		super(previousController, createDatabaseView, configuration);
@@ -64,7 +64,7 @@ public class CreateDatabaseController extends ConsoleController<CreateDatabaseCo
 	}
 
 	private boolean prepareMainAccount() {
-		boolean createdCorrectly = false;
+		boolean createdCorrectly;
 		try(DatabaseConnection databaseConnection = new DatabaseConnection(configuration)) {
 			Connection connection = databaseConnection.createEncryptedConnection();
 			if(!mainAccountAlreadyExist(connection)) {
@@ -89,7 +89,7 @@ public class CreateDatabaseController extends ConsoleController<CreateDatabaseCo
 		Password password = Password.createObject(configuration.getDatabasePassword(), MAIN_ACCOUNT_DEFAULT_NAME, "");
 		boolean createdCorrectly = password.update(connection);
 		User mainUser = User.createObject(MAIN_ACCOUNT_DEFAULT_NAME, password);
-		createdCorrectly = mainUser.update(connection);
+		createdCorrectly &= mainUser.update(connection);
 		return createdCorrectly;
 	}
 	
@@ -97,7 +97,7 @@ public class CreateDatabaseController extends ConsoleController<CreateDatabaseCo
 		User mainUser = User.createObject(1);
 		boolean createdCorrectly = mainUser.load(connection);
 		mainUser.getMainPassword().setPassword(configuration.getDatabasePassword());
-		createdCorrectly = mainUser.update(connection);
+		createdCorrectly &= mainUser.update(connection);
 		return createdCorrectly;
 	}
 

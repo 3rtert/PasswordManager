@@ -59,11 +59,10 @@ public abstract class ConsoleView<C extends Controller<C, V>, V extends View<C,V
 		int widthInCharacters = console.getWidthInCharacters();
 		int withOfLeftOrnament = (widthInCharacters - getTitle().length()) / 2 / ORNAMENT.length();
 		int withOfRightOrnament = (getTitle().length() % 2 == 0) ? withOfLeftOrnament : withOfLeftOrnament + 1;
-		StringBuilder fullOrnament = new StringBuilder();
-		fullOrnament.append(ORNAMENT.repeat(withOfLeftOrnament));
-		fullOrnament.append(getTitle());
-		fullOrnament.append(ORNAMENT.repeat(withOfRightOrnament));
-		console.print(fullOrnament.toString(), false);
+		String fullOrnament = ORNAMENT.repeat(withOfLeftOrnament) +
+				getTitle() +
+				ORNAMENT.repeat(withOfRightOrnament);
+		console.print(fullOrnament, false);
 	}
 	
 	protected int getLeftMarginLength() {

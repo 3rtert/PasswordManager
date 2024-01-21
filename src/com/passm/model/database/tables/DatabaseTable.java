@@ -25,7 +25,7 @@ public abstract class DatabaseTable {
 	
 	protected String getInsertSql(String[] columns, Object...values) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("INSERT INTO " + getTable_name() + " (");
+		sb.append("INSERT INTO ").append(getTable_name()).append(" (");
 		for(String column : columns) {
 			sb.append(" ");
 			sb.append(column);
@@ -40,7 +40,7 @@ public abstract class DatabaseTable {
 		}
 		sb.deleteCharAt(sb.length() - 1);
 		sb.append(" ); ");
-		sb.append("SELECT last_insert_rowid();");
+		sb.append(LAST_INSERT_ROW_ID_SQL);
 		return sb.toString();
 	}
 	
@@ -93,7 +93,7 @@ public abstract class DatabaseTable {
 	}
 	
 	public ResultSet getObject(Statement statement, int id) throws SQLException {
-		String sql = "SELECT * FROM " + getTable_name() + " o WHERE " + ID_FIELD_NAME + " = " + Integer.toString(id);
+		String sql = "SELECT * FROM " + getTable_name() + " o WHERE " + ID_FIELD_NAME + " = " + id;
 		return statement.executeQuery(sql);
 	}
 	

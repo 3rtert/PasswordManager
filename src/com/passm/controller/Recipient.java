@@ -2,5 +2,5 @@ package com.passm.controller;
 
 public interface Recipient {
 	
-	public void receive(Object object);
+	void receive(Object object);
 }

@@ -4,7 +4,6 @@ import java.util.logging.Logger;
 
 import com.passm.controller.CreatePasswordController;
 import com.passm.view.console.Console;
-import com.passm.view.menu.main.MainMenuView;
 
 public class CreatePasswordView extends ConsoleView<CreatePasswordController, CreatePasswordView> {
 	
@@ -13,9 +12,9 @@ public class CreatePasswordView extends ConsoleView<CreatePasswordController, Cr
 	private final static String TITLE = " Create new password ";
 	
 	private final static String LOGIN_MESSAGE = "Login: ";
-	private final static String PASSOWRD_MESSAGE = "Password: ";
+	private final static String PASSWORD_MESSAGE = "Password: ";
 	private final static String PASSWORD_CONFIRMATION_MESSAGE = "Password (again): ";
-	private final static String NAME_MESSAGE = "Name (webside/program): ";
+	private final static String NAME_MESSAGE = "Name (website/program): ";
 	private final static String EMPTY_FIELD_WARNING = "This field cannot be empty";
 	private final static String DIFFERENT_PASSWORDS_WARNING = "Passwords must be the same";
 	
@@ -59,10 +58,10 @@ public class CreatePasswordView extends ConsoleView<CreatePasswordController, Cr
 	}
 	
 	private String receivePassword(Console console) {
-		String password = null, passwordConfirmation = null;
+		String password = null, passwordConfirmation;
 		boolean isPasswordCorrect = false;
 		while(!isPasswordCorrect) {
-			console.print(PASSOWRD_MESSAGE);
+			console.print(PASSWORD_MESSAGE);
 			password = console.readLine(true);
 			console.ln();
 			if(password.length() > 0) {
