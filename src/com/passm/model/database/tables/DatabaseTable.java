@@ -75,15 +75,13 @@ public abstract class DatabaseTable {
 	}
 
 	protected String getDeleteSql(int id) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("DELETE FROM ");
-		sb.append(getTable_name());
-		sb.append(" WHERE ");
-		sb.append(ID_FIELD_NAME);
-		sb.append(" = ");
-		sb.append(id);
-		sb.append(";");
-		return sb.toString();
+        return "DELETE FROM " +
+                getTable_name() +
+                " WHERE " +
+                ID_FIELD_NAME +
+                " = " +
+                id +
+                ";";
 	}
 
 	public boolean exist(Statement statement, int id) throws SQLException {

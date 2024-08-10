@@ -11,12 +11,12 @@ public class UnselectorThread extends Thread {
 	private final static Logger LOGGER = Logger.getLogger(UnselectorThread.class.getName());
 	private static ClipboardUpdater clipboardUpdater;
 	
-	private int ID = new Random().nextInt();
+	private final int ID = new Random().nextInt();
 	
-	private long waitFrom;
+	private final long waitFrom;
 	private long waitUntil;
 	private String oldValue;
-	private Selectable selectable;
+	private final Selectable selectable;
 	private boolean isCanceled;
 	
 	public UnselectorThread(long waitUntil, String oldValue, Selectable selectable) {
