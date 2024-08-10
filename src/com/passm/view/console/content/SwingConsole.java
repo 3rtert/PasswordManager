@@ -33,11 +33,11 @@ public class SwingConsole implements Console {
 
 	private final ListenerOfActionsThread listenerOfActionsThread;
 
-	private final Function<String, Boolean> LINE_WITH_ENTER_FILTER = currentLine -> currentLine.length() > 0
+	private final Function<String, Boolean> LINE_WITH_ENTER_FILTER = currentLine -> !currentLine.isEmpty()
 			&& (currentLine.charAt(0) == InputListener.ENTER
 			|| currentLine.charAt(currentLine.length() - 1) == InputListener.ENTER);
 
-	private final Function<String, Boolean> ANY_INPUT_FILTER = currentLine -> currentLine.length() > 0;
+	private final Function<String, Boolean> ANY_INPUT_FILTER = currentLine -> !currentLine.isEmpty();
 
 	public static SwingConsole create() {
 		return new SwingConsole(DEFAULT_NAME, false, false);
@@ -294,7 +294,7 @@ public class SwingConsole implements Console {
 	}
 
 	@Override
-	public void diableListening() {
+	public void disableListening() {
 		inputListener.disableListening();
 		inputListener.clearBuffer();
 	}

@@ -23,6 +23,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import com.passm.model.database.DatabaseCreator;
 
+@SuppressWarnings("SameParameterValue")
 public class DatabaseEncrypterDecrypter {
 	
 	private final static Logger LOGGER = Logger.getLogger(DatabaseEncrypterDecrypter.class.getName());
@@ -72,7 +73,8 @@ public class DatabaseEncrypterDecrypter {
 		return decrypt(ENCRYPTED_DATABASE_FILE, DATABASE_FILE);
 	}
 
-	private boolean encrypt(String inputFileName, String outputFileName) {
+	@SuppressWarnings("SameParameterValue")
+    private boolean encrypt(String inputFileName, String outputFileName) {
 		LOGGER.info("Start encrypting file " + inputFileName + " to file " + outputFileName);
 		try {
 			cipher.init(Cipher.ENCRYPT_MODE, secretKey);

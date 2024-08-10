@@ -45,7 +45,7 @@ public abstract class ConsoleView<C extends Controller<C, V>, V extends View<C,V
 		LOGGER.info("Start reset of " + getName());
 		console.clear();
 		console.clearActions();
-		console.diableListening();
+		console.disableListening();
 	}
 	
 	@Override

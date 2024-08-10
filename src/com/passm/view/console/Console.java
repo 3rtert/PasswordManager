@@ -38,6 +38,6 @@ public interface Console {
 	void setLocation(int x, int y);
 	void setFontSize(int fontSize);
 	void stop();
-	void diableListening();
+	void disableListening();
 
 }

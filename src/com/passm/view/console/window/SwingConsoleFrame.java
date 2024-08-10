@@ -1,7 +1,5 @@
 package com.passm.view.console.window;
 
-import java.awt.Image;
-
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -44,10 +42,6 @@ public class SwingConsoleFrame extends JFrame {
 
 	public static SwingConsoleFrame create(String name, InputListener inputListener) {
 		return new SwingConsoleFrame(name, inputListener, false);
-	}
-
-	public void setIconImage(Image image) {
-		setIconImage(image);
 	}
 
 	public void setText(String text, boolean scrollDown) {

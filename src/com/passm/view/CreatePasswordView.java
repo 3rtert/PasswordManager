@@ -49,7 +49,7 @@ public class CreatePasswordView extends ConsoleView<CreatePasswordController, Cr
 		while(!isLoginCorrect) {
 			console.print(LOGIN_MESSAGE);
 			login = console.readLine();
-			isLoginCorrect = login.length() > 0;
+			isLoginCorrect = !login.isEmpty();
 			if(!isLoginCorrect) {
 				console.println(EMPTY_FIELD_WARNING);
 			}
@@ -64,7 +64,7 @@ public class CreatePasswordView extends ConsoleView<CreatePasswordController, Cr
 			console.print(PASSWORD_MESSAGE);
 			password = console.readLine(true);
 			console.ln();
-			if(password.length() > 0) {
+			if(!password.isEmpty()) {
 				console.print(PASSWORD_CONFIRMATION_MESSAGE);
 				passwordConfirmation = console.readLine(true);
 				console.ln();
@@ -85,7 +85,7 @@ public class CreatePasswordView extends ConsoleView<CreatePasswordController, Cr
 		while(!isNameCorrect) {
 			console.print(NAME_MESSAGE);
 			name = console.readLine();
-			isNameCorrect = name.length() > 0;
+			isNameCorrect = !name.isEmpty();
 			if(!isNameCorrect) {
 				console.println(EMPTY_FIELD_WARNING);
 			}
