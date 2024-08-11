@@ -30,13 +30,21 @@ public class UserTable extends DatabaseTable {
 	public String getTable_name() {
 		return getTableName();
 	}
-	
+
 	public static String getTableName() {
 		return TABLE_NAME;
 	}
 
 	public static String getId() {
 		return ID;
+	}
+
+	public static String getName() {
+		return NAME;
+	}
+
+	public static String getMainPassword() {
+		return MAIN_PASSWORD;
 	}
 
 	@Override

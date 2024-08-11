@@ -41,9 +41,9 @@ public class PasswordEntity extends Entity {
 	@Override
 	protected Object[] getFields() {
 		return new Object[] {
-			password,
 			login,
-			name
+			name,
+			password
 		};
 	}
 	
@@ -78,9 +78,9 @@ public class PasswordEntity extends Entity {
 	@Override
 	public boolean load(Statement statement) {
 		try (ResultSet rs = passwordTable.getObject(statement, getId())) {
-			this.password = rs.getString(2);
-			this.login = rs.getString(3);
-			this.name = rs.getString(4);
+			this.password = rs.getString(PasswordTable.getPasswordHash());
+			this.login = rs.getString(PasswordTable.getLogin());
+			this.name = rs.getString(PasswordTable.getName());
 		} catch (SQLException e) {
 			return false;
 		}

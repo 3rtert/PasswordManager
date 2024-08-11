@@ -65,8 +65,8 @@ public class PasswordAssignment extends Entity {
 	@Override
 	public boolean load(Statement statement) {
 		try (ResultSet rs = passwordAssignmentTable.getObject(statement, getId())) {
-			this.userId = rs.getInt(2);
-			this.passwordId = rs.getInt(3);
+			this.userId = rs.getInt(PasswordAssignmentTable.getUserId());
+			this.passwordId = rs.getInt(PasswordAssignmentTable.getPasswordId());
 		} catch (SQLException e) {
 			return false;
 		}

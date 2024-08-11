@@ -65,8 +65,8 @@ public class UserEntity extends Entity {
 	@Override
 	public boolean load(Statement statement) {
 		try (ResultSet rs = userTable.getObject(statement, getId())) {
-			this.name = rs.getString(2);
-			this.mainPassword = rs.getInt(3);
+			this.name = rs.getString(UserTable.getName());
+			this.mainPassword = rs.getInt(UserTable.getMainPassword());
 		} catch (SQLException e) {
 			return false;
 		}
